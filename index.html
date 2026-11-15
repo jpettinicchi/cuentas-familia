@@ -35,26 +35,25 @@
         <div class="bg-white p-6 rounded-3xl max-w-lg w-full shadow-2xl border-2 border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <h3 class="text-xl font-black text-slate-800">⚙️ Configuración (Hijos)</h3>
-                <button onclick="cerrarModal('modal-config')" class="text-3xl font-bold text-slate-400 hover:text-slate-700">&times;</button>
+                <button type="button" onclick="cerrarModal('modal-config')" class="text-3xl font-bold text-slate-400 hover:text-slate-700">&times;</button>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">Supabase URL *</label>
-                <input type="text" id="cfg-url" placeholder="https://xxxx.supabase.co" class="w-full rounded-xl border-slate-300">
+                <input type="text" id="cfg-url" class="w-full rounded-xl border-slate-300">
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">Supabase Publishable / Anon Key *</label>
-                <input type="password" id="cfg-key" placeholder="sb_publishable_..." class="w-full rounded-xl border-slate-300">
+                <input type="password" id="cfg-key" class="w-full rounded-xl border-slate-300">
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de los Hijos (separados por coma)</label>
-                <input type="text" id="cfg-wa" placeholder="Javier: 54911..., Magui: 54911..." class="w-full rounded-xl border-slate-300">
-                <p class="text-xs text-slate-500 mt-1">Formato: <code>Nombre: 54911XXXXXXXX, Nombre2: 54911YYYYYYYY</code></p>
+                <input type="text" id="cfg-wa" class="w-full rounded-xl border-slate-300">
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">Monto alerta anti-estafa ($)</label>
                 <input type="number" id="cfg-umbral" value="150000" class="w-full rounded-xl border-slate-300">
             </div>
-            <button onclick="guardarConfig()" class="w-full bg-blue-700 hover:bg-blue-800 text-white btn-xl shadow-lg">
+            <button type="button" onclick="guardarConfig()" class="w-full bg-blue-700 hover:bg-blue-800 text-white btn-xl shadow-lg">
                 Guardar y Conectar
             </button>
         </div>
@@ -65,7 +64,7 @@
         <div class="bg-white p-6 rounded-3xl max-w-lg w-full shadow-2xl border-4 border-slate-200 space-y-4 my-auto">
             <div class="flex justify-between items-center border-b-2 pb-3">
                 <h3 id="modal-carga-titulo" class="text-2xl font-black">Anotar</h3>
-                <button onclick="cerrarModal('modal-carga')" class="text-3xl font-bold text-slate-500 hover:text-slate-800 px-2">&times;</button>
+                <button type="button" onclick="cerrarModal('modal-carga')" class="text-3xl font-bold text-slate-500 hover:text-slate-800 px-2">&times;</button>
             </div>
 
             <form id="form-movimiento" onsubmit="guardarMovimiento(event)" class="space-y-4">
@@ -138,7 +137,7 @@
                         <h1 class="text-2xl font-black text-slate-900 tracking-tight">🏡 Cuentas Claras</h1>
                         <p id="status-conexion" class="text-xs font-bold text-slate-500">Conectando...</p>
                     </div>
-                    <button onclick="abrirModalConfig()" class="sm:hidden p-2.5 bg-slate-100 rounded-xl text-slate-600 border border-slate-300">
+                    <button type="button" onclick="abrirModalConfig()" class="sm:hidden p-2.5 bg-slate-100 rounded-xl text-slate-600 border border-slate-300">
                         <i class="fa-solid fa-gear text-lg"></i>
                     </button>
                 </div>
@@ -146,14 +145,14 @@
                 <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
                     <!-- SELECTOR DE PERFIL -->
                     <div class="bg-slate-100 p-1 rounded-xl border border-slate-300 flex text-xs font-extrabold">
-                        <button id="btn-modo-padres" onclick="cambiarModo('Padres')" class="px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow">👴👵 Padres</button>
-                        <button id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="px-3 py-1.5 rounded-lg text-slate-600">👨‍👩‍👧 Hijos</button>
+                        <button type="button" id="btn-modo-padres" onclick="cambiarModo('Padres')" class="px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow">👴👵 Padres</button>
+                        <button type="button" id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="px-3 py-1.5 rounded-lg text-slate-600">👨‍👩‍👧 Hijos</button>
                     </div>
 
                     <!-- SELECTOR MES Y AÑO -->
                     <input type="month" id="filtro-mes-anio" onchange="renderizarPantalla()" class="bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm py-1.5 px-2.5">
 
-                    <button onclick="abrirModalConfig()" class="hidden sm:block p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300" title="Configuración">
+                    <button type="button" onclick="abrirModalConfig()" class="hidden sm:block p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300" title="Configuración">
                         <i class="fa-solid fa-gear text-lg"></i>
                     </button>
                 </div>
@@ -161,21 +160,30 @@
 
             <!-- BARRA DE SOLAPAS (PESTAÑAS) -->
             <nav class="grid grid-cols-2 gap-2 pt-1">
-                <button id="tab-btn-resumen" onclick="cambiarSolapa('resumen')" class="py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition">
+                <button type="button" id="tab-btn-resumen" onclick="cambiarSolapa('resumen')" class="py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition">
                     🏠 Resumen
                 </button>
-                <button id="tab-btn-movimientos" onclick="cambiarSolapa('movimientos')" class="py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2">
+                <button type="button" id="tab-btn-movimientos" onclick="cambiarSolapa('movimientos')" class="py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2">
                     📋 Movimientos <span id="badge-cant-mov" class="bg-slate-200 text-slate-800 text-xs font-black px-2 py-0.5 rounded-full">0</span>
                 </button>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto p-4">
+    <main class="max-w-3xl mx-auto p-4 space-y-5">
 
-        <!-- =============================================================== -->
-        <!-- SOLAPA 1: RESUMEN GENERAL                                       -->
-        <!-- =============================================================== -->
+        <!-- PANEL EXCLUSIVO MODO HIJOS (VISIBLE EN CUALQUIER SOLAPA) -->
+        <section id="panel-hijos" class="hidden bg-indigo-100 border-2 border-indigo-400 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+            <div>
+                <p class="font-black text-indigo-950 text-base">👨‍👩‍👧 Herramientas de Asistencia (Hijos)</p>
+                <p class="text-xs text-indigo-900 font-medium">Cargá servicios fijos recurrentes para que a tus padres les aparezcan listos para tildar cada mes.</p>
+            </div>
+            <button type="button" onclick="abrirModalCarga('Servicio_Fijo')" class="w-full sm:w-auto bg-indigo-700 hover:bg-indigo-800 text-white font-bold px-4 py-2.5 rounded-xl text-sm whitespace-nowrap shadow">
+                + Agregar Servicio Fijo
+            </button>
+        </section>
+
+        <!-- SOLAPA 1: RESUMEN GENERAL -->
         <div id="vista-resumen" class="space-y-6">
 
             <!-- ESCUDO ANTI-ESTAFAS -->
@@ -187,7 +195,7 @@
                         <p class="text-sm text-amber-900 font-medium">Ante la duda, frená y consultá antes de transferir.</p>
                     </div>
                 </div>
-                <button onclick="pedirAyudaWhatsApp()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-5 py-3.5 rounded-2xl text-base shadow-md whitespace-nowrap flex items-center justify-center gap-2">
+                <button type="button" onclick="pedirAyudaWhatsApp()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-5 py-3.5 rounded-2xl text-base shadow-md whitespace-nowrap flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> Consultar a mis hijos
                 </button>
             </div>
@@ -210,22 +218,11 @@
 
             <!-- BOTONES PRINCIPALES -->
             <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
+                <button type="button" onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
                     <i class="fa-solid fa-minus-circle text-2xl"></i> Anotar un Gasto
                 </button>
-                <button onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
+                <button type="button" onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
                     <i class="fa-solid fa-plus-circle text-2xl"></i> Anotar un Ingreso
-                </button>
-            </section>
-
-            <!-- PANEL EXCLUSIVO MODO HIJOS -->
-            <section id="panel-hijos" class="hidden bg-indigo-50 border-2 border-indigo-300 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div>
-                    <p class="font-black text-indigo-950 text-base">👨‍👩‍👧 Herramientas de Asistencia (Hijos)</p>
-                    <p class="text-xs text-indigo-800">Cargá servicios fijos recurrentes para que a tus padres les aparezcan listos para tildar cada mes.</p>
-                </div>
-                <button onclick="abrirModalCarga('Servicio_Fijo')" class="w-full sm:w-auto bg-indigo-700 hover:bg-indigo-800 text-white font-bold px-4 py-2.5 rounded-xl text-sm whitespace-nowrap shadow">
-                    + Agregar Servicio Fijo
                 </button>
             </section>
 
@@ -251,7 +248,7 @@
 
             <!-- COMPARTIR POR WHATSAPP -->
             <div class="flex justify-end">
-                <button onclick="compartirResumenWhatsApp()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-4 rounded-2xl text-lg shadow-md flex items-center justify-center gap-2">
+                <button type="button" onclick="compartirResumenWhatsApp()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-4 rounded-2xl text-lg shadow-md flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar resumen por WhatsApp
                 </button>
             </div>
@@ -270,17 +267,14 @@
 
         </div>
 
-        <!-- =============================================================== -->
-        <!-- SOLAPA 2: MOVIMIENTOS MENSUALES (CON FLECHITA PARA BORRAR)      -->
-        <!-- =============================================================== -->
+        <!-- SOLAPA 2: MOVIMIENTOS MENSUALES (CON FLECHITA PARA BORRAR) -->
         <div id="vista-movimientos" class="hidden space-y-5">
 
-            <!-- ACCESOS RÁPIDOS PARA VOLVER A CARGAR SI CORRIGIERON ALGO -->
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
+                <button type="button" onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
                     <i class="fa-solid fa-minus-circle"></i> + Gasto
                 </button>
-                <button onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
+                <button type="button" onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
                     <i class="fa-solid fa-plus-circle"></i> + Ingreso
                 </button>
             </div>
@@ -298,13 +292,9 @@
     </main>
 
     <script>
-        // =========================================================================
-        // 1. CREDENCIALES Y TELÉFONOS FIJOS
-        // =========================================================================
         const DEFAULT_SB_URL = "https://pclkbapwrnkjvjtgmqcu.supabase.co";
         const DEFAULT_SB_KEY = "sb_publishable_mdGVI-wR-CALV9X7MY_xLw_CkN8Jj1b";
         const DEFAULT_WA_LISTA = "Javier: 5491140811857, Magui: 5491124032416, Verito: 5493855748753";
-        // =========================================================================
 
         const CATEGORIAS = {
             Ingreso: [
@@ -338,26 +328,71 @@
         const MESES_CORTOS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-        let SB_URL = localStorage.getItem('padres_sb_url') || DEFAULT_SB_URL;
-        let SB_KEY = localStorage.getItem('padres_sb_key') || DEFAULT_SB_KEY;
-        let WA_RAW = localStorage.getItem('padres_wa_lista') || DEFAULT_WA_LISTA;
+        let SB_URL = DEFAULT_SB_URL;
+        let SB_KEY = DEFAULT_SB_KEY;
+        let WA_RAW = DEFAULT_WA_LISTA;
         let UMBRAL_ALERTA = parseFloat(localStorage.getItem('padres_umbral')) || 150000;
         let MODO_ACTUAL = localStorage.getItem('padres_modo') || "Padres";
-        let SOLAPA_ACTUAL = "resumen";
 
         let todosLosMovimientos = [];
         let movimientosMes = [];
         let chartEvolucion = null;
 
-        const pad2 = n => String(n).padStart(2, '0');
-        const ymActualLocal = () => {
+        function pad2(n) {
+            return String(n).padStart(2, '0');
+        }
+
+        function ymActualLocal() {
             const d = new Date();
-            return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}`;
-        };
-        const fechaHoyLocal = () => {
+            return d.getFullYear() + '-' + pad2(d.getMonth() + 1);
+        }
+
+        function fechaHoyLocal() {
             const d = new Date();
-            return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; }; const formatearYm = ym => { const [a, m] = ym.split('-'); return `${MESES_CORTOS[parseInt(m) - 1]} ${a}`; };  document.addEventListener("DOMContentLoaded", () => { document.getElementById('filtro-mes-anio').value = ymActualLocal(); document.getElementById('mov-fecha').value = fechaHoyLocal(); aplicarUIModo();  if (!SB_URL \vert{}\vert{} SB_URL.includes("TU-PROYECTO") \vert{}\vert{} !SB_KEY) { abrirModalConfig(); } else { cargarDatos(); } });  // --- CAMBIO DE SOLAPA --- function cambiarSolapa(solapa) { SOLAPA_ACTUAL = solapa; const vRes = document.getElementById('vista-resumen'); const vMov = document.getElementById('vista-movimientos'); const bRes = document.getElementById('tab-btn-resumen'); const bMov = document.getElementById('tab-btn-movimientos');  if (solapa === 'resumen') { vRes.classList.remove('hidden'); vMov.classList.add('hidden'); bRes.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition"; bMov.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2"; renderizarGrafico(); } else { vRes.classList.add('hidden'); vMov.classList.remove('hidden'); bMov.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition flex items-center justify-center gap-2"; bRes.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"; } }  function parsearTelefonosWA() { if (!WA_RAW) return []; return WA_RAW.split(',').map((item, idx) => { const partes = item.split(':'); if (partes.length === 2) { return { nombre: partes[0].trim(), tel: partes[1].replace(/\D/g, '') }; } return { nombre: `Hijo/a ${idx + 1}`, tel: item.replace(/\D/g, '') };
-            }).filter(x => x.tel.length >= 8);
+            return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+        }
+
+        function formatearYm(ym) {
+            const partes = ym.split('-');
+            return MESES_CORTOS[parseInt(partes[1], 10) - 1] + ' ' + partes[0];
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('filtro-mes-anio').value = ymActualLocal();
+            document.getElementById('mov-fecha').value = fechaHoyLocal();
+            aplicarUIModo();
+            cargarDatos();
+        });
+
+        function cambiarSolapa(solapa) {
+            const vRes = document.getElementById('vista-resumen');
+            const vMov = document.getElementById('vista-movimientos');
+            const bRes = document.getElementById('tab-btn-resumen');
+            const bMov = document.getElementById('tab-btn-movimientos');
+
+            if (solapa === 'resumen') {
+                vRes.classList.remove('hidden');
+                vMov.classList.add('hidden');
+                bRes.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition";
+                bMov.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2";
+                renderizarGrafico();
+            } else {
+                vRes.classList.add('hidden');
+                vMov.classList.remove('hidden');
+                bMov.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition flex items-center justify-center gap-2";
+                bRes.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition";
+            }
+        }
+
+        function parsearTelefonosWA() {
+            if (!WA_RAW) return [];
+            return WA_RAW.split(',').map(function(item, idx) {
+                const partes = item.split(':');
+                if (partes.length === 2) {
+                    return { nombre: partes[0].trim(), tel: partes[1].replace(/\D/g, '') };
+                }
+                return { nombre: 'Hijo/a ' + (idx + 1), tel: item.replace(/\D/g, '') };
+            }).filter(function(x) { return x.tel.length >= 8; });
         }
 
         function cambiarModo(nuevoModo) {
@@ -384,7 +419,7 @@
         }
 
         function abrirModalConfig() {
-            document.getElementById('cfg-url').value = SB_URL.includes("TU-PROYECTO") ? "" : SB_URL;
+            document.getElementById('cfg-url').value = SB_URL;
             document.getElementById('cfg-key').value = SB_KEY;
             document.getElementById('cfg-wa').value = WA_RAW;
             document.getElementById('cfg-umbral').value = UMBRAL_ALERTA;
@@ -400,12 +435,7 @@
             SB_KEY = document.getElementById('cfg-key').value.trim();
             WA_RAW = document.getElementById('cfg-wa').value.trim();
             UMBRAL_ALERTA = parseFloat(document.getElementById('cfg-umbral').value) || 150000;
-
-            localStorage.setItem('padres_sb_url', SB_URL);
-            localStorage.setItem('padres_sb_key', SB_KEY);
-            localStorage.setItem('padres_wa_lista', WA_RAW);
             localStorage.setItem('padres_umbral', UMBRAL_ALERTA);
-
             cerrarModal('modal-config');
             cargarDatos();
         }
@@ -425,16 +455,59 @@
             const campoFecha = document.getElementById('campo-fecha');
             const bloqueCuotas = document.getElementById('bloque-cuotas');
 
-            select.innerHTML = CATEGORIAS[tipo].map(c => `<option value="${c}">${c}</option>`).join('');  if (tipo === 'Gasto') { titulo.textContent = "🛒 Anotar un Gasto"; titulo.className = "text-2xl font-black text-rose-700"; btn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-xl mt-2"; campoVenc.classList.add('hidden'); campoFecha.classList.remove('hidden'); bloqueCuotas.classList.remove('hidden'); } else if (tipo === 'Ingreso') { titulo.textContent = "💰 Anotar un Ingreso"; titulo.className = "text-2xl font-black text-emerald-700"; btn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2"; campoVenc.classList.add('hidden'); campoFecha.classList.remove('hidden'); bloqueCuotas.classList.add('hidden'); } else if (tipo === 'Servicio_Fijo') { titulo.textContent = "📅 Nuevo Servicio Fijo Mensual"; titulo.className = "text-2xl font-black text-indigo-700"; btn.className = "w-full bg-indigo-700 hover:bg-indigo-800 text-white btn-xl shadow-xl mt-2"; campoVenc.classList.remove('hidden'); campoFecha.classList.add('hidden'); bloqueCuotas.classList.add('hidden'); }  document.getElementById('modal-carga').classList.remove('hidden'); }  function verificarRiesgoCategoria() { const cat = document.getElementById('mov-categoria').value; const alerta = document.getElementById('alerta-preventiva'); if (cat.includes('⚠️')) alerta.classList.remove('hidden'); else alerta.classList.add('hidden'); }  // --- LÓGICA DE CUOTAS --- function sumarMesesAFecha(fechaStr, mesesASumar) { const [a, m, d] = fechaStr.split('-').map(Number); const t = new Date(a, m - 1 + mesesASumar, 1); const y = t.getFullYear(), mm = t.getMonth() + 1; const ultimoDia = new Date(y, mm, 0).getDate(); return `${y}-${pad2(mm)}-${pad2(Math.min(d, ultimoDia))}`;
+            select.innerHTML = CATEGORIAS[tipo].map(function(c) {
+                return '<option value="' + c + '">' + c + '</option>';
+            }).join('');
+
+            if (tipo === 'Gasto') {
+                titulo.textContent = "🛒 Anotar un Gasto";
+                titulo.className = "text-2xl font-black text-rose-700";
+                btn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-xl mt-2";
+                campoVenc.classList.add('hidden');
+                campoFecha.classList.remove('hidden');
+                bloqueCuotas.classList.remove('hidden');
+            } else if (tipo === 'Ingreso') {
+                titulo.textContent = "💰 Anotar un Ingreso";
+                titulo.className = "text-2xl font-black text-emerald-700";
+                btn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2";
+                campoVenc.classList.add('hidden');
+                campoFecha.classList.remove('hidden');
+                bloqueCuotas.classList.add('hidden');
+            } else if (tipo === 'Servicio_Fijo') {
+                titulo.textContent = "📅 Nuevo Servicio Fijo Mensual";
+                titulo.className = "text-2xl font-black text-indigo-700";
+                btn.className = "w-full bg-indigo-700 hover:bg-indigo-800 text-white btn-xl shadow-xl mt-2";
+                campoVenc.classList.remove('hidden');
+                campoFecha.classList.add('hidden');
+                bloqueCuotas.classList.add('hidden');
+            }
+
+            document.getElementById('modal-carga').classList.remove('hidden');
+        }
+
+        function verificarRiesgoCategoria() {
+            const cat = document.getElementById('mov-categoria').value;
+            const alerta = document.getElementById('alerta-preventiva');
+            if (cat.indexOf('⚠️') !== -1) alerta.classList.remove('hidden');
+            else alerta.classList.add('hidden');
+        }
+
+        function sumarMesesAFecha(fechaStr, mesesASumar) {
+            const partes = fechaStr.split('-').map(Number);
+            const t = new Date(partes[0], partes[1] - 1 + mesesASumar, 1);
+            const y = t.getFullYear();
+            const mm = t.getMonth() + 1;
+            const ultimoDia = new Date(y, mm, 0).getDate();
+            return y + '-' + pad2(mm) + '-' + pad2(Math.min(partes[2], ultimoDia));
         }
 
         function calcularCuotas() {
-            const cant = Math.max(1, Math.min(48, parseInt(document.getElementById('mov-cuotas').value) || 1));
+            const cant = Math.max(1, Math.min(48, parseInt(document.getElementById('mov-cuotas').value, 10) || 1));
             const modo = document.getElementById('mov-modo-cuota').value;
             const monto = parseFloat(document.getElementById('mov-monto').value) || 0;
             const valorCuota = modo === 'total' ? Math.round((monto / cant) * 100) / 100 : monto;
             const totalFinal = modo === 'total' ? monto : monto * cant;
-            return { cant, modo, monto, valorCuota, totalFinal };
+            return { cant: cant, modo: modo, monto: monto, valorCuota: valorCuota, totalFinal: totalFinal };
         }
 
         function actualizarPreviewCuotas() {
@@ -446,17 +519,24 @@
                 return;
             }
             const mesFin = sumarMesesAFecha(fecha, c.cant - 1).slice(0, 7);
-            prev.textContent = `Se anotarán ${c.cant} cuotas de$${c.valorCuota.toLocaleString('es-AR')} desde${formatearYm(fecha.slice(0, 7))} hasta ${formatearYm(mesFin)} (Total:$${c.totalFinal.toLocaleString('es-AR')}).`;
+            prev.textContent = 'Se anotarán ' + c.cant + ' cuotas de $' + c.valorCuota.toLocaleString('es-AR') + ' desde ' + formatearYm(fecha.slice(0, 7)) + ' hasta ' + formatearYm(mesFin) + ' (Total: $' + c.totalFinal.toLocaleString('es-AR') + ').';
             prev.classList.remove('hidden');
         }
 
         async function cargarDatos() {
-            if (!SB_URL || !SB_KEY) return;
             const status = document.getElementById('status-conexion');
+            status.textContent = "⏳ Conectando...";
             try {
-                const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres?order=fecha.desc`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+                const res = await fetch(SB_URL + '/rest/v1/movimientos_padres?order=fecha.desc', {
+                    headers: {
+                        'apikey': SB_KEY,
+                        'Authorization': 'Bearer ' + SB_KEY
+                    }
                 });
-                if (!res.ok) throw new Error("Error de conexión");
+                if (!res.ok) {
+                    const txt = await res.text();
+                    throw new Error('HTTP ' + res.status + ': ' + txt);
+                }
                 todosLosMovimientos = await res.json();
 
                 status.textContent = "🟢 Sincronizado con la familia";
@@ -464,7 +544,8 @@
 
                 renderizarPantalla();
             } catch (e) {
-                status.textContent = "🔴 Sin conexión (revisar configuración)";
+                console.error("Error Supabase:", e);
+                status.textContent = "🔴 Error: " + e.message;
                 status.className = "text-xs font-bold text-rose-600";
             }
         }
@@ -474,11 +555,13 @@
             const ymHoy = ymActualLocal();
             const esMesFuturo = ymSel > ymHoy;
 
-            movimientosMes = todosLosMovimientos.filter(m => m.fecha && m.fecha.startsWith(ymSel));
+            movimientosMes = todosLosMovimientos.filter(function(m) {
+                return m.fecha && m.fecha.indexOf(ymSel) === 0;
+            });
 
-            const [anioTexto, mesTexto] = ymSel.split('-');
-            const nombreMesLargo = `${MESES_LARGOS[parseInt(mesTexto) - 1]}${anioTexto}`;
-            document.getElementById('titulo-lista-movimientos').textContent = `📋 Movimientos de ${nombreMesLargo}${esMesFuturo ? ' (Proyectado)' : ''}`;
+            const partesYm = ymSel.split('-');
+            const nombreMesLargo = MESES_LARGOS[parseInt(partesYm[1], 10) - 1] + ' ' + partesYm[0];
+            document.getElementById('titulo-lista-movimientos').textContent = '📋 Movimientos de ' + nombreMesLargo + (esMesFuturo ? ' (Proyectado)' : '');
 
             let ing = 0;
             let gas = 0;
@@ -489,76 +572,72 @@
 
             // 1. Checklist de Servicios Fijos
             const plantillasServicios = [];
-            todosLosMovimientos.forEach(m => {
+            todosLosMovimientos.forEach(function(m) {
                 if (m.tipo_movimiento === 'Servicio_Fijo') {
-                    const clave = `${m.categoria}_${m.detalle || ''}`;
-                    if (!plantillasServicios.some(p => `${p.categoria}_${p.detalle || ''}` === clave)) {
-                        plantillasServicios.push(m);
-                    }
+                    const clave = m.categoria + '_' + (m.detalle || '');
+                    const existe = plantillasServicios.some(function(p) {
+                        return (p.categoria + '_' + (p.detalle || '')) === clave;
+                    });
+                    if (!existe) plantillasServicios.push(m);
                 }
             });
 
             let htmlServicios = "";
-            plantillasServicios.forEach(serv => {
-                const pagoEnMes = movimientosMes.find(m =>
-                    m.tipo_movimiento === 'Gasto' &&
-                    m.categoria === serv.categoria &&
-                    (m.detalle || '') === (serv.detalle || '')
-                );
+            plantillasServicios.forEach(function(serv) {
+                const pagoEnMes = movimientosMes.find(function(m) {
+                    return m.tipo_movimiento === 'Gasto' &&
+                        m.categoria === serv.categoria &&
+                        (m.detalle || '') === (serv.detalle || '');
+                });
 
                 const montoEst = parseFloat(serv.monto_pesos) || 0;
                 const diaVenc = serv.dia_vencimiento || 10;
+                const detalleTxt = serv.detalle ? ' (' + serv.detalle + ')' : '';
 
                 if (pagoEnMes) {
-                    htmlServicios += `
-                        <div class="p-3.5 rounded-2xl border-2 border-emerald-300 bg-emerald-50 flex justify-between items-center">
-                            <div>
-                                <p class="text-lg font-black text-emerald-900">✅ ${serv.categoria}${serv.detalle ? `(${serv.detalle})` : ''}</p>
-                                <p class="text-sm text-emerald-700 font-semibold">Pagado el ${pagoEnMes.fecha} ·$${parseFloat(pagoEnMes.monto_pesos).toLocaleString('es-AR')}</p>
-                            </div>
-                            ${MODO_ACTUAL === 'Hijos' ? `<button onclick="borrarMovimiento('${serv.id}')" class="text-xs text-slate-400 hover:text-red-600 underline">Quitar fijo</button>` : ''}
-                        </div>
-                    `;
+                    htmlServicios += '<div class="p-3.5 rounded-2xl border-2 border-emerald-300 bg-emerald-50 flex justify-between items-center">' +
+                        '<div>' +
+                            '<p class="text-lg font-black text-emerald-900">✅ ' + serv.categoria + detalleTxt + '</p>' +
+                            '<p class="text-sm text-emerald-700 font-semibold">Pagado el ' + pagoEnMes.fecha + ' · $' + parseFloat(pagoEnMes.monto_pesos).toLocaleString('es-AR') + '</p>' +
+                        '</div>' +
+                        (MODO_ACTUAL === 'Hijos' ? '<button type="button" onclick="borrarMovimiento(\'' + serv.id + '\')" class="text-xs text-slate-400 hover:text-red-600 underline">Quitar fijo</button>' : '') +
+                    '</div>';
                 } else {
-                    htmlServicios += `
-                        <div class="p-3.5 rounded-2xl border-2 border-amber-300 bg-amber-50/70 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                            <div>
-                                <p class="text-lg font-black text-slate-900">⏳ ${serv.categoria}${serv.detalle ? `(${serv.detalle})` : ''}</p>
-                                <p class="text-sm text-amber-900 font-semibold">Vence aprox. día ${diaVenc} · Estimado: $${montoEst.toLocaleString('es-AR')}</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button onclick="confirmarPagoServicio('${serv.categoria}', '${serv.detalle \vert{}\vert{} ''}',${montoEst})" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-base shadow">
-                                    Marcar Pagado
-                                </button>
-                                ${MODO_ACTUAL === 'Hijos' ? `<button onclick="borrarMovimiento('${serv.id}')" class="text-xs text-slate-400 hover:text-red-600 px-2">✕</button>` : ''}
-                            </div>
-                        </div>
-                    `;
+                    htmlServicios += '<div class="p-3.5 rounded-2xl border-2 border-amber-300 bg-amber-50/70 flex flex-col sm:flex-row justify-between sm:items-center gap-2">' +
+                        '<div>' +
+                            '<p class="text-lg font-black text-slate-900">⏳ ' + serv.categoria + detalleTxt + '</p>' +
+                            '<p class="text-sm text-amber-900 font-semibold">Vence aprox. día ' + diaVenc + ' · Estimado: $' + montoEst.toLocaleString('es-AR') + '</p>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-2">' +
+                            '<button type="button" onclick="confirmarPagoServicio(\'' + serv.categoria.replace(/'/g, '') + '\', \'' + (serv.detalle || '').replace(/'/g, '') + '\', ' + montoEst + ')" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-base shadow">Marcar Pagado</button>' +
+                            (MODO_ACTUAL === 'Hijos' ? '<button type="button" onclick="borrarMovimiento(\'' + serv.id + '\')" class="text-xs text-slate-400 hover:text-red-600 px-2">✕</button>' : '') +
+                        '</div>' +
+                    '</div>';
                 }
             });
 
             document.getElementById('lista-servicios').innerHTML = htmlServicios || '<p class="text-base text-slate-500 italic">No hay servicios fijos configurados. (Se agregan desde Modo Hijos)</p>';
 
-            // 2. Movimientos del Mes (Solapa Movimientos)
-            movimientosMes.forEach(m => {
+            // 2. Movimientos del Mes
+            movimientosMes.forEach(function(m) {
                 if (m.tipo_movimiento === 'Servicio_Fijo') return;
                 cantMovimientosReales++;
 
                 const monto = parseFloat(m.monto_pesos) || 0;
-                const esRiesgoso = m.tipo_movimiento === 'Gasto' && (monto >= UMBRAL_ALERTA || (m.categoria && m.categoria.includes('⚠️')) || m.alerta_estafa);
+                const esRiesgoso = m.tipo_movimiento === 'Gasto' && (monto >= UMBRAL_ALERTA || (m.categoria && m.categoria.indexOf('⚠️') !== -1) || m.alerta_estafa);
 
                 if (m.tipo_movimiento === 'Ingreso') ing += monto;
                 else if (m.tipo_movimiento === 'Gasto') gas += monto;
 
                 if (esRiesgoso) {
                     hayAlertas = true;
-                    htmlAlertas += `
-                        <div class="bg-white p-3 rounded-2xl border-2 border-red-300 flex justify-between items-center">
-                            <div>
-                                <p class="font-black text-red-800 text-lg">${m.categoria}</p>
-                                <p class="text-base text-slate-700">${m.detalle || 'Sin detalle'} (${m.fecha})</p> </div> <span class="font-black text-xl text-red-700">$${monto.toLocaleString('es-AR')}</span>
-                        </div>
-                    `;
+                    htmlAlertas += '<div class="bg-white p-3 rounded-2xl border-2 border-red-300 flex justify-between items-center">' +
+                        '<div>' +
+                            '<p class="font-black text-red-800 text-lg">' + m.categoria + '</p>' +
+                            '<p class="text-base text-slate-700">' + (m.detalle || 'Sin detalle') + ' (' + m.fecha + ')</p>' +
+                        '</div>' +
+                        '<span class="font-black text-xl text-red-700">$' + monto.toLocaleString('es-AR') + '</span>' +
+                    '</div>';
                 }
 
                 const colorCard = m.tipo_movimiento === 'Ingreso' ? 'border-emerald-200 bg-emerald-50/50' : (esRiesgoso ? 'border-red-400 bg-red-50' : 'border-slate-200 bg-slate-50');
@@ -569,16 +648,27 @@
                     : '<span class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold mr-1">Gasto</span>';
                 const badgeAutor = m.cargado_por === 'Hijos' ? '<span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-bold ml-1">Cargado por hijos</span>' : '';
 
-                htmlLista += `
-                    <div class="p-4 rounded-2xl border-2 ${colorCard} flex items-center justify-between gap-3">
-                        <div class="min-w-0 flex-1">
-                            <p class="text-lg font-black text-slate-900 leading-snug">${badgeTipo}${m.categoria}${badgeAutor}</p>
-                            <p class="text-base text-slate-600 font-medium mt-0.5">${m.detalle || 'Sin detalle'} · <span class="text-sm font-bold">${m.fecha}</span></p>
-                        </div>
-                        <div class="flex items-center gap-2.5 shrink-0">
-                            <span class="text-xl sm:text-2xl font-black ${colorMonto}">${signo}$${monto.toLocaleString('es-AR')}</span>
-                            <button onclick="borrarMovimiento('${m.id}', '${m.categoria.replace(/'/g, '')}', ${monto})" title="Borrar este registro" class="bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white border-2 border-rose-300 font-black px-3.5 py-2.5 rounded-2xl text-base shadow-sm flex items-center gap-1.5 transition"> <i class="fa-solid fa-arrow-left"></i> <span class="hidden sm:inline text-sm">Borrar</span> </button> </div> </div> `; });  document.getElementById('badge-cant-mov').textContent = cantMovimientosReales;  const saldo = ing - gas; document.getElementById('total-ingresos').textContent = `$${ing.toLocaleString('es-AR')}`;
-            document.getElementById('total-gastos').textContent = `$${gas.toLocaleString('es-AR')}`; document.getElementById('total-saldo').textContent = `$${saldo.toLocaleString('es-AR')}`;
+                htmlLista += '<div class="p-4 rounded-2xl border-2 ' + colorCard + ' flex items-center justify-between gap-3">' +
+                    '<div class="min-w-0 flex-1">' +
+                        '<p class="text-lg font-black text-slate-900 leading-snug">' + badgeTipo + m.categoria + badgeAutor + '</p>' +
+                        '<p class="text-base text-slate-600 font-medium mt-0.5">' + (m.detalle || 'Sin detalle') + ' · <span class="text-sm font-bold">' + m.fecha + '</span></p>' +
+                    '</div>' +
+                    '<div class="flex items-center gap-2.5 shrink-0">' +
+                        '<span class="text-xl sm:text-2xl font-black ' + colorMonto + '">' + signo + '$' + monto.toLocaleString('es-AR') + '</span>' +
+                        '<button type="button" onclick="borrarMovimiento(\'' + m.id + '\', \'' + m.categoria.replace(/'/g, '') + '\', ' + monto + ')" title="Borrar este registro" class="bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white border-2 border-rose-300 font-black px-3.5 py-2.5 rounded-2xl text-base shadow-sm flex items-center gap-1.5 transition">' +
+                            '<i class="fa-solid fa-arrow-left"></i>' +
+                            '<span class="hidden sm:inline text-sm">Borrar</span>' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            });
+
+            document.getElementById('badge-cant-mov').textContent = cantMovimientosReales;
+
+            const saldo = ing - gas;
+            document.getElementById('total-ingresos').textContent = '$' + ing.toLocaleString('es-AR');
+            document.getElementById('total-gastos').textContent = '$' + gas.toLocaleString('es-AR');
+            document.getElementById('total-saldo').textContent = '$' + saldo.toLocaleString('es-AR');
             document.getElementById('lista-movimientos').innerHTML = htmlLista || '<p class="text-lg text-slate-500">Todavía no hay movimientos anotados en este mes.</p>';
 
             const secAlertas = document.getElementById('seccion-alertas');
@@ -589,15 +679,17 @@
                 secAlertas.classList.add('hidden');
             }
 
-            // 3. Actualizar Gráfico de Barras
             renderizarGrafico();
         }
 
         function renderizarGrafico() {
+            const ctx = document.getElementById('grafico-evolucion');
+            if (!ctx || typeof Chart === 'undefined') return;
+
             const ymHoy = ymActualLocal();
             const porMes = {};
 
-            todosLosMovimientos.forEach(m => {
+            todosLosMovimientos.forEach(function(m) {
                 if (!m.fecha || m.tipo_movimiento === 'Servicio_Fijo') return;
                 const k = m.fecha.slice(0, 7);
                 if (!porMes[k]) porMes[k] = { ing: 0, gas: 0 };
@@ -610,9 +702,11 @@
             const mesesContinuos = [];
             if (claves.length > 0) {
                 const fin = claves[claves.length - 1] > ymHoy ? claves[claves.length - 1] : ymHoy;
-                let [a, m] = claves[0].split('-').map(Number);
+                const partes = claves[0].split('-').map(Number);
+                let a = partes[0];
+                let m = partes[1];
                 while (true) {
-                    const k = `${a}-${pad2(m)}`;
+                    const k = a + '-' + pad2(m);
                     mesesContinuos.push(k);
                     if (k >= fin) break;
                     m++;
@@ -622,14 +716,13 @@
                 mesesContinuos.push(ymHoy);
             }
 
-            const labels = mesesContinuos.map(k => formatearYm(k) + (k > ymHoy ? ' (proy.)' : ''));
-            const dataIng = mesesContinuos.map(k => porMes[k]?.ing || 0);
-            const dataGas = mesesContinuos.map(k => porMes[k]?.gas || 0);
+            const labels = mesesContinuos.map(function(k) { return formatearYm(k) + (k > ymHoy ? ' (proy.)' : ''); });
+            const dataIng = mesesContinuos.map(function(k) { return porMes[k] ? porMes[k].ing : 0; });
+            const dataGas = mesesContinuos.map(function(k) { return porMes[k] ? porMes[k].gas : 0; });
 
-            const bgIng = mesesContinuos.map(k => k > ymHoy ? 'rgba(5, 150, 105, 0.45)' : '#059669');
-            const bgGas = mesesContinuos.map(k => k > ymHoy ? 'rgba(225, 29, 72, 0.45)' : '#e11d48');
+            const bgIng = mesesContinuos.map(function(k) { return k > ymHoy ? 'rgba(5, 150, 105, 0.45)' : '#059669'; });
+            const bgGas = mesesContinuos.map(function(k) { return k > ymHoy ? 'rgba(225, 29, 72, 0.45)' : '#e11d48'; });
 
-            const ctx = document.getElementById('grafico-evolucion');
             if (chartEvolucion) chartEvolucion.destroy();
 
             chartEvolucion = new Chart(ctx, {
@@ -662,98 +755,4 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: c => `${c.dataset.label}:$${c.parsed.y.toLocaleString('es-AR')}`
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { size: 12, weight: 'bold' }, color: '#334155' },
-                            grid: { display: false }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: { size: 12 },
-                                color: '#475569',
-                                callback: v => '$' + v.toLocaleString('es-AR')
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        async function confirmarPagoServicio(categoria, detalle, montoEstimado) {
-            const montoStr = prompt(`¿Cuánto pagaste de ${categoria}${detalle ? ' (' + detalle + ')' : ''}?`, montoEstimado); if (montoStr === null) return; const montoFinal = parseFloat(montoStr) \vert{}\vert{} montoEstimado;  const ymSel = document.getElementById('filtro-mes-anio').value \vert{}\vert{} ymActualLocal(); const hoyDia = pad2(new Date().getDate());  await enviarASupabase([{ fecha: `${ymSel}-${hoyDia}`, tipo_movimiento: 'Gasto', categoria: categoria, detalle: detalle, monto_pesos: montoFinal, pagado: true, alerta_estafa: false, cargado_por: MODO_ACTUAL }]); }  async function guardarMovimiento(e) { e.preventDefault(); const tipo = document.getElementById('mov-tipo').value; const categoria = document.getElementById('mov-categoria').value; const detalle = document.getElementById('mov-detalle').value.trim(); const fechaBase = document.getElementById('mov-fecha').value \vert{}\vert{} fechaHoyLocal(); const diaVenc = parseInt(document.getElementById('mov-dia-venc').value) \vert{}\vert{} 10;  const c = tipo === 'Gasto' ? calcularCuotas() : { cant: 1, valorCuota: parseFloat(document.getElementById('mov-monto').value) \vert{}\vert{} 0, totalFinal: parseFloat(document.getElementById('mov-monto').value) \vert{}\vert{} 0 }; const esRiesgoso = tipo === 'Gasto' && (c.totalFinal >= UMBRAL_ALERTA \vert{}\vert{} categoria.includes('⚠️'));  const filasAInsertar = []; for (let i = 0; i < c.cant; i++) { const fechaCuota = sumarMesesAFecha(fechaBase, i); const textoDetalle = c.cant > 1 ? `${detalle || categoria} (Cuota ${i + 1}/${c.cant})`
-                    : detalle;
-
-                filasAInsertar.push({
-                    fecha: fechaCuota,
-                    tipo_movimiento: tipo,
-                    categoria: categoria,
-                    detalle: textoDetalle,
-                    monto_pesos: c.valorCuota,
-                    pagado: tipo !== 'Servicio_Fijo',
-                    dia_vencimiento: tipo === 'Servicio_Fijo' ? diaVenc : null,
-                    alerta_estafa: i === 0 ? esRiesgoso : false,
-                    cargado_por: MODO_ACTUAL
-                });
-            }
-
-            await enviarASupabase(filasAInsertar);
-            cerrarModal('modal-carga');
-
-            if (esRiesgoso && MODO_ACTUAL === 'Padres') {
-                if (confirm("⚠️ Este gasto/préstamo es de un monto alto o de transferencia.\n\n¿Querés avisarle ahora por WhatsApp a tus hijos para quedarte tranquilo/a?")) {
-                    enviarAlertaPuntualWhatsApp(categoria, detalle, c.totalFinal);
-                }
-            }
-        }
-
-        async function enviarASupabase(filas) {
-            try {
-                const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres`, { method: 'POST', headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify(filas)
-                });
-                if (!res.ok) throw new Error(await res.text());
-                await cargarDatos();
-            } catch (err) {
-                alert("Error al guardar: " + err.message);
-            }
-        }
-
-        async function borrarMovimiento(id, categoria = "", monto = 0) {
-            const detalleConfirm = categoria
-                ? `¿Querés borrar "${categoria}" por $${parseFloat(monto).toLocaleString('es-AR')}?`
-                : "¿Seguro que querés borrar este registro?";
-            if (!confirm(detalleConfirm)) return;
-            try {
-                await fetch(`${SB_URL}/rest/v1/movimientos_padres?id=eq.${id}`, {
-                    method: 'DELETE',
-                    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }); cargarDatos(); } catch (err) { alert("Error al borrar."); } }  // --- FUNCIONES DE WHATSAPP CON SOPORTE MULTI-CONTACTO --- function elegirDestinatarioWA(mensajeCodificado) { const lista = parsearTelefonosWA(); if (lista.length === 0) { window.open(`https://wa.me/?text=${mensajeCodificado}`, '_blank');
-                return;
-            }
-            if (lista.length === 1) {
-                window.open(`https://wa.me/${lista[0].tel}?text=${mensajeCodificado}`, '_blank');
-                return;
-            }
-            let menu = "¿A quién le enviamos el mensaje?\n\n";
-            lista.forEach((item, idx) => { menu += `${idx + 1} -${item.nombre}\n`; });
-            menu += "\nEscribí el número:";
-            const resp = prompt(menu, "1");
-            if (resp === null) return;
-            const elegida = lista[parseInt(resp) - 1] || lista[0];
-            window.open(`https://wa.me/${elegida.tel}?text=${mensajeCodificado}`, '_blank');
-        }
-
-        function pedirAyudaWhatsApp() {
-            const msg = encodeURIComponent("Hola, me están pidiendo plata, una transferencia o claves por teléfono/mensaje y quiero consultarlo con ustedes antes de hacer nada.");
-            elegirDestinatarioWA(msg);
-        }
-
-        function enviarAlertaPuntualWhatsApp(categoria, detalle, monto) {
-            const msg = encodeURIComponent(`⚠️ Aviso de
+                                label: function(c) { return
