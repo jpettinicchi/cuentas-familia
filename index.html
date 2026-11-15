@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuentas Claras — Familia</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -46,7 +47,7 @@
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de los Hijos (separados por coma)</label>
-                <input type="text" id="cfg-wa" placeholder="Javier: 54911..., Hermana: 54911..." class="w-full rounded-xl border-slate-300">
+                <input type="text" id="cfg-wa" placeholder="Javier: 54911..., Magui: 54911..." class="w-full rounded-xl border-slate-300">
                 <p class="text-xs text-slate-500 mt-1">Formato: <code>Nombre: 54911XXXXXXXX, Nombre2: 54911YYYYYYYY</code></p>
             </div>
             <div>
@@ -72,7 +73,7 @@
 
                 <div>
                     <label class="block text-lg font-bold text-slate-800 mb-1">1. Monto en Pesos ($)</label>
-                    <input type="number" id="mov-monto" step="0.01" required placeholder="Ej: 25000" class="w-full rounded-2xl border-slate-400 font-black text-2xl text-slate-900 focus:border-blue-600">
+                    <input type="number" id="mov-monto" step="0.01" required placeholder="Ej: 25000" oninput="actualizarPreviewCuotas()" class="w-full rounded-2xl border-slate-400 font-black text-2xl text-slate-900 focus:border-blue-600">
                 </div>
 
                 <div>
@@ -88,6 +89,24 @@
                     <p class="text-base mt-1 font-medium">Si alguien te llamó por teléfono, banco o WhatsApp pidiéndote plata o una transferencia, <strong>no transfieras sin hablar antes con tus hijos</strong>.</p>
                 </div>
 
+                <!-- SECCIÓN CUOTAS (SOLO PARA GASTOS) -->
+                <div id="bloque-cuotas" class="bg-slate-100 p-3.5 rounded-2xl border-2 border-slate-300 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">¿En cuántas cuotas?</label>
+                            <input type="number" id="mov-cuotas" min="1" max="48" value="1" oninput="actualizarPreviewCuotas()" class="w-full rounded-xl border-slate-400 bg-white font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">El monto anotado es:</label>
+                            <select id="mov-modo-cuota" onchange="actualizarPreviewCuotas()" class="w-full rounded-xl border-slate-400 bg-white text-base font-semibold">
+                                <option value="total">El total a dividir</option>
+                                <option value="cuota">El valor de cada cuota</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p id="preview-cuotas" class="text-sm font-bold text-blue-800 hidden"></p>
+                </div>
+
                 <div id="campo-vencimiento" class="hidden">
                     <label class="block text-lg font-bold text-slate-800 mb-1">Día aproximado de vencimiento (1 al 31)</label>
                     <input type="number" id="mov-dia-venc" min="1" max="31" value="10" class="w-full rounded-2xl border-slate-400">
@@ -95,12 +114,12 @@
 
                 <div>
                     <label class="block text-lg font-bold text-slate-800 mb-1">3. Detalle corto (opcional)</label>
-                    <input type="text" id="mov-detalle" placeholder="Ej: Farmacia / Edenor / Jubilación" class="w-full rounded-2xl border-slate-400">
+                    <input type="text" id="mov-detalle" placeholder="Ej: Farmacia / Heladera / Jubilación" class="w-full rounded-2xl border-slate-400">
                 </div>
 
                 <div id="campo-fecha">
-                    <label class="block text-lg font-bold text-slate-800 mb-1">4. Fecha</label>
-                    <input type="date" id="mov-fecha" required class="w-full rounded-2xl border-slate-400">
+                    <label class="block text-lg font-bold text-slate-800 mb-1">4. Fecha (o 1ª cuota)</label>
+                    <input type="date" id="mov-fecha" required onchange="actualizarPreviewCuotas()" class="w-full rounded-2xl border-slate-400">
                 </div>
 
                 <button type="submit" id="btn-submit-mov" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2">
@@ -123,27 +142,15 @@
                 </button>
             </div>
 
-            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
                 <!-- SELECTOR DE PERFIL -->
                 <div class="bg-slate-100 p-1 rounded-xl border border-slate-300 flex text-xs font-extrabold">
                     <button id="btn-modo-padres" onclick="cambiarModo('Padres')" class="px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow">👴👵 Padres</button>
                     <button id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="px-3 py-1.5 rounded-lg text-slate-600">👨‍👩‍👧 Hijos</button>
                 </div>
 
-                <select id="filtro-mes" onchange="cargarDatos()" class="bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm py-1.5 px-2.5">
-                    <option value="01">Enero</option>
-                    <option value="02">Febrero</option>
-                    <option value="03">Marzo</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Mayo</option>
-                    <option value="06">Junio</option>
-                    <option value="07">Julio</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Septiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>
-                </select>
+                <!-- SELECTOR MES Y AÑO -->
+                <input type="month" id="filtro-mes-anio" onchange="renderizarPantalla()" class="bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm py-1.5 px-2.5">
 
                 <button onclick="abrirModalConfig()" class="hidden sm:block p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300" title="Configuración">
                     <i class="fa-solid fa-gear text-lg"></i>
@@ -179,7 +186,7 @@
                 <p id="total-gastos" class="text-3xl font-black text-rose-700 mt-1">$0</p>
             </div>
             <div class="bg-blue-50 p-5 rounded-3xl border-2 border-blue-300 shadow-sm">
-                <p class="text-base font-bold text-blue-950">🏦 Disponible hoy</p>
+                <p class="text-base font-bold text-blue-950">🏦 Saldo del mes</p>
                 <p id="total-saldo" class="text-3xl font-black text-blue-800 mt-1">$0</p>
             </div>
         </section>
@@ -234,19 +241,31 @@
 
         <!-- HISTORIAL DE MOVIMIENTOS -->
         <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-4">
-            <h3 class="text-xl font-black text-slate-800 border-b-2 pb-3">📋 Movimientos anotados este mes</h3>
+            <h3 id="titulo-lista-movimientos" class="text-xl font-black text-slate-800 border-b-2 pb-3">📋 Movimientos del mes</h3>
             <div id="lista-movimientos" class="space-y-3"></div>
+        </section>
+
+        <!-- GRÁFICO DE BARRAS: ACTUALES Y PROYECTADOS (INGRESOS VS EGRESOS) -->
+        <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
+            <div class="border-b-2 pb-2">
+                <h3 class="text-xl font-black text-slate-800">📊 Evolución Mensual y Cuotas Proyectadas</h3>
+                <p class="text-sm text-slate-600 font-medium">Comparación de ingresos vs. gastos (incluye cuotas futuras ya cargadas)</p>
+            </div>
+            <div class="relative h-72 w-full">
+                <canvas id="grafico-evolucion"></canvas>
+            </div>
+            <p class="text-xs text-slate-500 font-medium">Nota: Los meses marcados con <strong>(proy.)</strong> muestran cuotas futuras ya comprometidas.</p>
         </section>
 
     </main>
 
     <script>
         // =========================================================================
-        // 1. CREDENCIALES Y TELÉFONOS FIJOS (REEMPLAZÁ TU URL Y TELÉFONOS AQUÍ)
+        // 1. CREDENCIALES Y TELÉFONOS FIJOS
         // =========================================================================
         const DEFAULT_SB_URL = "https://pclkbapwrnkjvjtgmqcu.supabase.co";
         const DEFAULT_SB_KEY = "sb_publishable_mdGVI-wR-CALV9X7MY_xLw_CkN8Jj1b";
-        const DEFAULT_WA_LISTA = "Javier: 5491140811857, Magui: 5491124032416,Verito:5493855748753"
+        const DEFAULT_WA_LISTA = "Javier: 5491140811857, Magui: 5491124032416, Verito: 5493855748753";
         // =========================================================================
 
         const CATEGORIAS = {
@@ -263,6 +282,7 @@
                 "Servicios (Luz, Gas, Agua, Teléfono)",
                 "Impuestos / Expensas",
                 "Salidas / Regalos / Nietos",
+                "Otros gastos extras",
                 "⚠️ Préstamo / Ayuda a otra persona",
                 "⚠️ Transferencia / Compra telefónica"
             ],
@@ -277,6 +297,9 @@
             ]
         };
 
+        const MESES_CORTOS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
         let SB_URL = localStorage.getItem('padres_sb_url') || DEFAULT_SB_URL;
         let SB_KEY = localStorage.getItem('padres_sb_key') || DEFAULT_SB_KEY;
         let WA_RAW = localStorage.getItem('padres_wa_lista') || DEFAULT_WA_LISTA;
@@ -285,11 +308,25 @@
 
         let todosLosMovimientos = [];
         let movimientosMes = [];
+        let chartEvolucion = null;
+
+        const pad2 = n => String(n).padStart(2, '0');
+        const ymActualLocal = () => {
+            const d = new Date();
+            return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}`;
+        };
+        const fechaHoyLocal = () => {
+            const d = new Date();
+            return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+        };
+        const formatearYm = ym => {
+            const [a, m] = ym.split('-');
+            return `${MESES_CORTOS[parseInt(m) - 1]} ${a}`;
+        };
 
         document.addEventListener("DOMContentLoaded", () => {
-            const hoy = new Date();
-            document.getElementById('filtro-mes').value = String(hoy.getMonth() + 1).padStart(2, '0');
-            document.getElementById('mov-fecha').value = hoy.toISOString().split('T')[0];
+            document.getElementById('filtro-mes-anio').value = ymActualLocal();
+            document.getElementById('mov-fecha').value = fechaHoyLocal();
             aplicarUIModo();
 
             if (!SB_URL || SB_URL.includes("TU-PROYECTO") || !SB_KEY) {
@@ -363,14 +400,17 @@
         function abrirModalCarga(tipo) {
             document.getElementById('mov-tipo').value = tipo;
             document.getElementById('form-movimiento').reset();
-            document.getElementById('mov-fecha').value = new Date().toISOString().split('T')[0];
+            document.getElementById('mov-fecha').value = fechaHoyLocal();
+            document.getElementById('mov-cuotas').value = 1;
             document.getElementById('alerta-preventiva').classList.add('hidden');
+            document.getElementById('preview-cuotas').classList.add('hidden');
 
             const titulo = document.getElementById('modal-carga-titulo');
             const btn = document.getElementById('btn-submit-mov');
             const select = document.getElementById('mov-categoria');
             const campoVenc = document.getElementById('campo-vencimiento');
             const campoFecha = document.getElementById('campo-fecha');
+            const bloqueCuotas = document.getElementById('bloque-cuotas');
 
             select.innerHTML = CATEGORIAS[tipo].map(c => `<option value="${c}">${c}</option>`).join('');
 
@@ -380,18 +420,21 @@
                 btn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-xl mt-2";
                 campoVenc.classList.add('hidden');
                 campoFecha.classList.remove('hidden');
+                bloqueCuotas.classList.remove('hidden');
             } else if (tipo === 'Ingreso') {
                 titulo.textContent = "💰 Anotar un Ingreso";
                 titulo.className = "text-2xl font-black text-emerald-700";
                 btn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2";
                 campoVenc.classList.add('hidden');
                 campoFecha.classList.remove('hidden');
+                bloqueCuotas.classList.add('hidden');
             } else if (tipo === 'Servicio_Fijo') {
                 titulo.textContent = "📅 Nuevo Servicio Fijo Mensual";
                 titulo.className = "text-2xl font-black text-indigo-700";
                 btn.className = "w-full bg-indigo-700 hover:bg-indigo-800 text-white btn-xl shadow-xl mt-2";
                 campoVenc.classList.remove('hidden');
                 campoFecha.classList.add('hidden');
+                bloqueCuotas.classList.add('hidden');
             }
 
             document.getElementById('modal-carga').classList.remove('hidden');
@@ -402,6 +445,37 @@
             const alerta = document.getElementById('alerta-preventiva');
             if (cat.includes('⚠️')) alerta.classList.remove('hidden');
             else alerta.classList.add('hidden');
+        }
+
+        // --- LÓGICA DE CUOTAS ---
+        function sumarMesesAFecha(fechaStr, mesesASumar) {
+            const [a, m, d] = fechaStr.split('-').map(Number);
+            const t = new Date(a, m - 1 + mesesASumar, 1);
+            const y = t.getFullYear(), mm = t.getMonth() + 1;
+            const ultimoDia = new Date(y, mm, 0).getDate();
+            return `${y}-${pad2(mm)}-${pad2(Math.min(d, ultimoDia))}`;
+        }
+
+        function calcularCuotas() {
+            const cant = Math.max(1, Math.min(48, parseInt(document.getElementById('mov-cuotas').value) || 1));
+            const modo = document.getElementById('mov-modo-cuota').value;
+            const monto = parseFloat(document.getElementById('mov-monto').value) || 0;
+            const valorCuota = modo === 'total' ? Math.round((monto / cant) * 100) / 100 : monto;
+            const totalFinal = modo === 'total' ? monto : monto * cant;
+            return { cant, modo, monto, valorCuota, totalFinal };
+        }
+
+        function actualizarPreviewCuotas() {
+            const prev = document.getElementById('preview-cuotas');
+            const fecha = document.getElementById('mov-fecha').value;
+            const c = calcularCuotas();
+            if (c.cant <= 1 || !c.monto || !fecha) {
+                prev.classList.add('hidden');
+                return;
+            }
+            const mesFin = sumarMesesAFecha(fecha, c.cant - 1).slice(0, 7);
+            prev.textContent = `Se anotarán ${c.cant} cuotas de $${c.valorCuota.toLocaleString('es-AR')} desde ${formatearYm(fecha.slice(0, 7))} hasta ${formatearYm(mesFin)} (Total: $${c.totalFinal.toLocaleString('es-AR')}).`;
+            prev.classList.remove('hidden');
         }
 
         async function cargarDatos() {
@@ -417,10 +491,6 @@
                 status.textContent = "🟢 Sincronizado con la familia";
                 status.className = "text-xs font-bold text-emerald-700";
 
-                const mesSel = document.getElementById('filtro-mes').value;
-                const anioActual = String(new Date().getFullYear());
-
-                movimientosMes = todosLosMovimientos.filter(m => m.fecha && m.fecha.startsWith(`${anioActual}-${mesSel}`));
                 renderizarPantalla();
             } catch (e) {
                 status.textContent = "🔴 Sin conexión (revisar configuración)";
@@ -429,13 +499,23 @@
         }
 
         function renderizarPantalla() {
+            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
+            const ymHoy = ymActualLocal();
+            const esMesFuturo = ymSel > ymHoy;
+
+            movimientosMes = todosLosMovimientos.filter(m => m.fecha && m.fecha.startsWith(ymSel));
+
+            const [anioTexto, mesTexto] = ymSel.split('-');
+            const nombreMesLargo = `${MESES_LARGOS[parseInt(mesTexto) - 1]} ${anioTexto}`;
+            document.getElementById('titulo-lista-movimientos').textContent = `📋 Movimientos de ${nombreMesLargo}${esMesFuturo ? ' (Proyectado)' : ''}`;
+
             let ing = 0;
             let gas = 0;
             let htmlLista = "";
             let htmlAlertas = "";
             let hayAlertas = false;
 
-            // 1. Renderizar Checklist de Servicios Fijos
+            // 1. Checklist de Servicios Fijos
             const plantillasServicios = [];
             todosLosMovimientos.forEach(m => {
                 if (m.tipo_movimiento === 'Servicio_Fijo') {
@@ -487,7 +567,7 @@
 
             document.getElementById('lista-servicios').innerHTML = htmlServicios || '<p class="text-base text-slate-500 italic">No hay servicios fijos configurados. (Se agregan desde Modo Hijos)</p>';
 
-            // 2. Renderizar Movimientos del Mes
+            // 2. Movimientos del Mes
             movimientosMes.forEach(m => {
                 if (m.tipo_movimiento === 'Servicio_Fijo') return;
 
@@ -544,6 +624,100 @@
             } else {
                 secAlertas.classList.add('hidden');
             }
+
+            // 3. Actualizar Gráfico de Barras
+            renderizarGrafico();
+        }
+
+        function renderizarGrafico() {
+            const ymHoy = ymActualLocal();
+            const porMes = {};
+
+            todosLosMovimientos.forEach(m => {
+                if (!m.fecha || m.tipo_movimiento === 'Servicio_Fijo') return;
+                const k = m.fecha.slice(0, 7);
+                if (!porMes[k]) porMes[k] = { ing: 0, gas: 0 };
+                const val = parseFloat(m.monto_pesos) || 0;
+                if (m.tipo_movimiento === 'Ingreso') porMes[k].ing += val;
+                else if (m.tipo_movimiento === 'Gasto') porMes[k].gas += val;
+            });
+
+            const claves = Object.keys(porMes).sort();
+            const mesesContinuos = [];
+            if (claves.length > 0) {
+                const fin = claves[claves.length - 1] > ymHoy ? claves[claves.length - 1] : ymHoy;
+                let [a, m] = claves[0].split('-').map(Number);
+                while (true) {
+                    const k = `${a}-${pad2(m)}`;
+                    mesesContinuos.push(k);
+                    if (k >= fin) break;
+                    m++;
+                    if (m > 12) { m = 1; a++; }
+                }
+            } else {
+                mesesContinuos.push(ymHoy);
+            }
+
+            const labels = mesesContinuos.map(k => formatearYm(k) + (k > ymHoy ? ' (proy.)' : ''));
+            const dataIng = mesesContinuos.map(k => porMes[k]?.ing || 0);
+            const dataGas = mesesContinuos.map(k => porMes[k]?.gas || 0);
+
+            const bgIng = mesesContinuos.map(k => k > ymHoy ? 'rgba(5, 150, 105, 0.45)' : '#059669');
+            const bgGas = mesesContinuos.map(k => k > ymHoy ? 'rgba(225, 29, 72, 0.45)' : '#e11d48');
+
+            const ctx = document.getElementById('grafico-evolucion');
+            if (chartEvolucion) chartEvolucion.destroy();
+
+            chartEvolucion = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Ingresos ($)',
+                            data: dataIng,
+                            backgroundColor: bgIng,
+                            borderRadius: 6,
+                            maxBarThickness: 45
+                        },
+                        {
+                            label: 'Gastos / Cuotas ($)',
+                            data: dataGas,
+                            backgroundColor: bgGas,
+                            borderRadius: 6,
+                            maxBarThickness: 45
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { font: { size: 13, weight: 'bold' }, color: '#0f172a' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: c => `${c.dataset.label}: $${c.parsed.y.toLocaleString('es-AR')}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { font: { size: 12, weight: 'bold' }, color: '#334155' },
+                            grid: { display: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: { size: 12 },
+                                color: '#475569',
+                                callback: v => '$' + v.toLocaleString('es-AR')
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         async function confirmarPagoServicio(categoria, detalle, montoEstimado) {
@@ -551,12 +725,11 @@
             if (montoStr === null) return;
             const montoFinal = parseFloat(montoStr) || montoEstimado;
 
-            const mesSel = document.getElementById('filtro-mes').value;
-            const anioActual = String(new Date().getFullYear());
-            const hoyDia = String(new Date().getDate()).padStart(2, '0');
+            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
+            const hoyDia = pad2(new Date().getDate());
 
-            await enviarASupabase({
-                fecha: `${anioActual}-${mesSel}-${hoyDia}`,
+            await enviarASupabase([{
+                fecha: `${ymSel}-${hoyDia}`,
                 tipo_movimiento: 'Gasto',
                 categoria: categoria,
                 detalle: detalle,
@@ -564,42 +737,51 @@
                 pagado: true,
                 alerta_estafa: false,
                 cargado_por: MODO_ACTUAL
-            });
+            }]);
         }
 
         async function guardarMovimiento(e) {
             e.preventDefault();
             const tipo = document.getElementById('mov-tipo').value;
-            const monto = parseFloat(document.getElementById('mov-monto').value) || 0;
             const categoria = document.getElementById('mov-categoria').value;
             const detalle = document.getElementById('mov-detalle').value.trim();
-            const fecha = document.getElementById('mov-fecha').value || new Date().toISOString().split('T')[0];
+            const fechaBase = document.getElementById('mov-fecha').value || fechaHoyLocal();
             const diaVenc = parseInt(document.getElementById('mov-dia-venc').value) || 10;
 
-            const esRiesgoso = tipo === 'Gasto' && (monto >= UMBRAL_ALERTA || categoria.includes('⚠️'));
+            const c = tipo === 'Gasto' ? calcularCuotas() : { cant: 1, valorCuota: parseFloat(document.getElementById('mov-monto').value) || 0, totalFinal: parseFloat(document.getElementById('mov-monto').value) || 0 };
+            const esRiesgoso = tipo === 'Gasto' && (c.totalFinal >= UMBRAL_ALERTA || categoria.includes('⚠️'));
 
-            await enviarASupabase({
-                fecha: fecha,
-                tipo_movimiento: tipo,
-                categoria: categoria,
-                detalle: detalle,
-                monto_pesos: monto,
-                pagado: tipo !== 'Servicio_Fijo',
-                dia_vencimiento: tipo === 'Servicio_Fijo' ? diaVenc : null,
-                alerta_estafa: esRiesgoso,
-                cargado_por: MODO_ACTUAL
-            });
+            const filasAInsertar = [];
+            for (let i = 0; i < c.cant; i++) {
+                const fechaCuota = sumarMesesAFecha(fechaBase, i);
+                const textoDetalle = c.cant > 1
+                    ? `${detalle || categoria} (Cuota ${i + 1}/${c.cant})`
+                    : detalle;
 
+                filasAInsertar.push({
+                    fecha: fechaCuota,
+                    tipo_movimiento: tipo,
+                    categoria: categoria,
+                    detalle: textoDetalle,
+                    monto_pesos: c.valorCuota,
+                    pagado: tipo !== 'Servicio_Fijo',
+                    dia_vencimiento: tipo === 'Servicio_Fijo' ? diaVenc : null,
+                    alerta_estafa: i === 0 ? esRiesgoso : false,
+                    cargado_por: MODO_ACTUAL
+                });
+            }
+
+            await enviarASupabase(filasAInsertar);
             cerrarModal('modal-carga');
 
             if (esRiesgoso && MODO_ACTUAL === 'Padres') {
-                if (confirm("⚠️ Este gasto es alto o es una transferencia/préstamo.\n\n¿Querés avisarle ahora por WhatsApp a tus hijos para quedarte tranquilo/a?")) {
-                    enviarAlertaPuntualWhatsApp(categoria, detalle, monto);
+                if (confirm("⚠️ Este gasto/préstamo es de un monto alto o de transferencia.\n\n¿Querés avisarle ahora por WhatsApp a tus hijos para quedarte tranquilo/a?")) {
+                    enviarAlertaPuntualWhatsApp(categoria, detalle, c.totalFinal);
                 }
             }
         }
 
-        async function enviarASupabase(payload) {
+        async function enviarASupabase(filas) {
             try {
                 const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres`, {
                     method: 'POST',
@@ -609,7 +791,7 @@
                         'Content-Type': 'application/json',
                         'Prefer': 'return=minimal'
                     },
-                    body: JSON.stringify([payload])
+                    body: JSON.stringify(filas)
                 });
                 if (!res.ok) throw new Error(await res.text());
                 await cargarDatos();
@@ -665,18 +847,19 @@
             const ing = document.getElementById('total-ingresos').textContent;
             const gas = document.getElementById('total-gastos').textContent;
             const sal = document.getElementById('total-saldo').textContent;
-            const mesSelect = document.getElementById('filtro-mes');
-            const nombreMes = mesSelect.options[mesSelect.selectedIndex].text;
+            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
+            const [a, m] = ymSel.split('-');
+            const nombreMes = `${MESES_LARGOS[parseInt(m) - 1]} ${a}`;
 
             let texto = `🏡 *Resumen Cuentas Claras - ${nombreMes}*\n\n`;
             texto += `💰 Ingresos: ${ing}\n`;
             texto += `🛒 Gastos: ${gas}\n`;
-            texto += `🏦 Disponible: ${sal}\n\n`;
-            texto += `*Últimos movimientos:*\n`;
+            texto += `🏦 Saldo: ${sal}\n\n`;
+            texto += `*Movimientos del mes:*\n`;
 
-            movimientosMes.filter(m => m.tipo_movimiento !== 'Servicio_Fijo').slice(0, 8).forEach(m => {
+            movimientosMes.filter(m => m.tipo_movimiento !== 'Servicio_Fijo').slice(0, 10).forEach(m => {
                 const signo = m.tipo_movimiento === 'Ingreso' ? '+' : '-';
-                texto += `• ${m.fecha.slice(5)}: ${m.categoria} (${signo}$${parseFloat(m.monto_pesos).toLocaleString('es-AR')})\n`;
+                texto += `• ${m.fecha.slice(5)}: ${m.categoria}${m.detalle ? ' (' + m.detalle + ')' : ''} (${signo}$${parseFloat(m.monto_pesos).toLocaleString('es-AR')})\n`;
             });
 
             elegirDestinatarioWA(encodeURIComponent(texto));
