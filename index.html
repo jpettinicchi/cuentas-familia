@@ -1,41 +1,44 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cuentas Claras — Familia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #f8fafc;
             color: #0f172a;
         }
         .btn-xl {
-            padding: 1.15rem 1.5rem;
-            font-size: 1.2rem;
+            padding: 1rem 1.25rem;
+            font-size: 1.15rem;
             font-weight: 800;
             border-radius: 1rem;
             transition: transform 0.1s;
         }
         .btn-xl:active { transform: scale(0.98); }
         input, select {
-            font-size: 1.15rem !important;
-            padding: 0.85rem !important;
+            font-size: 16px !important;
+            padding: 0.75rem !important;
             border-width: 2px !important;
+            max-width: 100%;
         }
     </style>
 </head>
 <body class="pb-24">
 
     <!-- MODAL CONFIGURACIÓN (USO DE HIJOS) -->
-    <div id="modal-config" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white p-6 rounded-3xl max-w-lg w-full shadow-2xl border-2 border-slate-200 space-y-4">
+    <div id="modal-config" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center hidden p-3 overflow-y-auto">
+        <div class="bg-white p-5 rounded-3xl max-w-lg w-full shadow-2xl border-2 border-slate-200 space-y-4 my-auto">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="text-xl font-black text-slate-800">⚙️ Configuración (Hijos)</h3>
-                <button type="button" onclick="cerrarModal('modal-config')" class="text-3xl font-bold text-slate-400 hover:text-slate-700">&times;</button>
+                <h3 class="text-lg font-black text-slate-800">⚙️ Configuración (Hijos)</h3>
+                <button type="button" onclick="cerrarModal('modal-config')" class="text-3xl font-bold text-slate-400 hover:text-slate-700 px-2">&times;</button>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">Supabase URL *</label>
@@ -60,10 +63,10 @@
     </div>
 
     <!-- MODAL CARGA DE MOVIMIENTO / SERVICIO FIJO -->
-    <div id="modal-carga" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
-        <div class="bg-white p-6 rounded-3xl max-w-lg w-full shadow-2xl border-4 border-slate-200 space-y-4 my-auto">
+    <div id="modal-carga" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center hidden p-3 overflow-y-auto">
+        <div class="bg-white p-5 rounded-3xl max-w-lg w-full shadow-2xl border-4 border-slate-200 space-y-4 my-auto">
             <div class="flex justify-between items-center border-b-2 pb-3">
-                <h3 id="modal-carga-titulo" class="text-2xl font-black">Anotar</h3>
+                <h3 id="modal-carga-titulo" class="text-xl sm:text-2xl font-black">Anotar</h3>
                 <button type="button" onclick="cerrarModal('modal-carga')" class="text-3xl font-bold text-slate-500 hover:text-slate-800 px-2">&times;</button>
             </div>
 
@@ -71,20 +74,20 @@
                 <input type="hidden" id="mov-tipo" value="Gasto">
 
                 <div>
-                    <label class="block text-lg font-bold text-slate-800 mb-1">1. Monto en Pesos ($)</label>
+                    <label class="block text-base sm:text-lg font-bold text-slate-800 mb-1">1. Monto en Pesos ($)</label>
                     <input type="number" id="mov-monto" step="0.01" required placeholder="Ej: 25000" oninput="actualizarPreviewCuotas()" class="w-full rounded-2xl border-slate-400 font-black text-2xl text-slate-900 focus:border-blue-600">
                 </div>
 
                 <div>
-                    <label class="block text-lg font-bold text-slate-800 mb-1">2. Categoría</label>
+                    <label class="block text-base sm:text-lg font-bold text-slate-800 mb-1">2. Categoría</label>
                     <select id="mov-categoria" required onchange="verificarRiesgoCategoria()" class="w-full rounded-2xl border-slate-400 bg-white font-semibold"></select>
                 </div>
 
-                <div id="alerta-preventiva" class="hidden bg-amber-100 border-l-8 border-amber-600 p-4 rounded-xl text-amber-950">
-                    <p class="font-black text-lg flex items-center gap-2">
-                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-2xl"></i> ¡Frená un segundo!
+                <div id="alerta-preventiva" class="hidden bg-amber-100 border-l-8 border-amber-600 p-3.5 rounded-xl text-amber-950">
+                    <p class="font-black text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl"></i> ¡Frená un segundo!
                     </p>
-                    <p class="text-base mt-1 font-medium">Si alguien te llamó por teléfono, banco o WhatsApp pidiéndote plata o una transferencia, <strong>no transfieras sin hablar antes con tus hijos</strong>.</p>
+                    <p class="text-sm sm:text-base mt-1 font-medium">Si alguien te llamó por teléfono, banco o WhatsApp pidiéndote plata o una transferencia, <strong>no transfieras sin hablar antes con tus hijos</strong>.</p>
                 </div>
 
                 <div id="bloque-cuotas" class="bg-slate-100 p-3.5 rounded-2xl border-2 border-slate-300 space-y-3">
@@ -95,7 +98,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1">El monto anotado es:</label>
-                            <select id="mov-modo-cuota" onchange="actualizarPreviewCuotas()" class="w-full rounded-xl border-slate-400 bg-white text-base font-semibold">
+                            <select id="mov-modo-cuota" onchange="actualizarPreviewCuotas()" class="w-full rounded-xl border-slate-400 bg-white font-semibold">
                                 <option value="total">El total a dividir</option>
                                 <option value="cuota">El valor de cada cuota</option>
                             </select>
@@ -105,17 +108,17 @@
                 </div>
 
                 <div id="campo-vencimiento" class="hidden">
-                    <label class="block text-lg font-bold text-slate-800 mb-1">Día aproximado de vencimiento (1 al 31)</label>
+                    <label class="block text-base sm:text-lg font-bold text-slate-800 mb-1">Día aproximado de vencimiento (1 al 31)</label>
                     <input type="number" id="mov-dia-venc" min="1" max="31" value="10" class="w-full rounded-2xl border-slate-400">
                 </div>
 
                 <div>
-                    <label class="block text-lg font-bold text-slate-800 mb-1">3. Detalle corto (opcional)</label>
+                    <label class="block text-base sm:text-lg font-bold text-slate-800 mb-1">3. Detalle corto (opcional)</label>
                     <input type="text" id="mov-detalle" placeholder="Ej: Farmacia / Heladera / Jubilación" class="w-full rounded-2xl border-slate-400">
                 </div>
 
                 <div id="campo-fecha">
-                    <label class="block text-lg font-bold text-slate-800 mb-1">4. Fecha (o 1ª cuota)</label>
+                    <label class="block text-base sm:text-lg font-bold text-slate-800 mb-1">4. Fecha (o 1ª cuota)</label>
                     <input type="date" id="mov-fecha" required onchange="actualizarPreviewCuotas()" class="w-full rounded-2xl border-slate-400">
                 </div>
 
@@ -126,128 +129,125 @@
         </div>
     </div>
 
-    <!-- CABECERA -->
-    <header class="bg-white border-b-2 border-slate-200 px-4 pt-3 pb-0 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-3xl mx-auto space-y-3">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
-                <div class="flex items-center justify-between w-full sm:w-auto">
-                    <div>
-                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">🏡 Cuentas Claras</h1>
-                        <p id="status-conexion" class="text-xs font-bold text-slate-500">Conectando...</p>
-                    </div>
-                    <button type="button" onclick="abrirModalConfig()" class="sm:hidden p-2.5 bg-slate-100 rounded-xl text-slate-600 border border-slate-300">
-                        <i class="fa-solid fa-gear text-lg"></i>
-                    </button>
+    <!-- CABECERA RESPONSIVE -->
+    <header class="bg-white border-b-2 border-slate-200 px-3 sm:px-4 pt-3 pb-0 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-3xl mx-auto space-y-2.5">
+            <!-- Fila 1: Título + Engranaje -->
+            <div class="flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight truncate">🏡 Cuentas Claras</h1>
+                    <p id="status-conexion" class="text-xs font-bold text-slate-500 truncate">Conectando...</p>
                 </div>
-
-                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
-                    <div class="bg-slate-100 p-1 rounded-xl border border-slate-300 flex text-xs font-extrabold">
-                        <button type="button" id="btn-modo-padres" onclick="cambiarModo('Padres')" class="px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow">👴👵 Padres</button>
-                        <button type="button" id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="px-3 py-1.5 rounded-lg text-slate-600">👨‍👩‍👧 Hijos</button>
-                    </div>
-
-                    <input type="month" id="filtro-mes-anio" onchange="renderizarPantalla()" class="bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm py-1.5 px-2.5">
-
-                    <button type="button" onclick="abrirModalConfig()" class="hidden sm:block p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300" title="Configuración">
-                        <i class="fa-solid fa-gear text-lg"></i>
-                    </button>
-                </div>
+                <button type="button" onclick="abrirModalConfig()" class="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300 shrink-0" title="Configuración">
+                    <i class="fa-solid fa-gear text-base sm:text-lg"></i>
+                </button>
             </div>
 
-            <nav class="grid grid-cols-2 gap-2 pt-1">
-                <button type="button" id="tab-btn-resumen" onclick="cambiarSolapa('resumen')" class="py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition">
+            <!-- Fila 2: Selector Padres/Hijos + Mes/Año apilables en móvil -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div class="bg-slate-100 p-1 rounded-xl border border-slate-300 grid grid-cols-2 text-xs sm:text-sm font-extrabold">
+                    <button type="button" id="btn-modo-padres" onclick="cambiarModo('Padres')" class="py-2 px-2 rounded-lg bg-blue-700 text-white shadow text-center">👴👵 Padres</button>
+                    <button type="button" id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="py-2 px-2 rounded-lg text-slate-600 text-center">👨‍👩‍👧 Hijos</button>
+                </div>
+
+                <input type="month" id="filtro-mes-anio" onchange="renderizarPantalla()" class="w-full bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm !py-1.5 !px-3">
+            </div>
+
+            <!-- Fila 3: Solapas Resumen y Movimientos -->
+            <nav class="grid grid-cols-2 gap-1.5 pt-1">
+                <button type="button" id="tab-btn-resumen" onclick="cambiarSolapa('resumen')" class="py-2.5 px-2 text-sm sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition text-center">
                     🏠 Resumen
                 </button>
-                <button type="button" id="tab-btn-movimientos" onclick="cambiarSolapa('movimientos')" class="py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2">
+                <button type="button" id="tab-btn-movimientos" onclick="cambiarSolapa('movimientos')" class="py-2.5 px-2 text-sm sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
                     📋 Movimientos <span id="badge-cant-mov" class="bg-slate-200 text-slate-800 text-xs font-black px-2 py-0.5 rounded-full">0</span>
                 </button>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto p-4 space-y-5">
+    <main class="max-w-3xl mx-auto p-3 sm:p-4 space-y-5">
 
         <!-- PANEL EXCLUSIVO MODO HIJOS -->
-        <section id="panel-hijos" class="hidden bg-indigo-100 border-2 border-indigo-400 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+        <section id="panel-hijos" class="hidden bg-indigo-100 border-2 border-indigo-400 rounded-3xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
             <div>
                 <p class="font-black text-indigo-950 text-base">👨‍👩‍👧 Herramientas de Asistencia (Hijos)</p>
-                <p class="text-xs text-indigo-900 font-medium">Cargá servicios fijos recurrentes para que a tus padres les aparezcan listos para tildar cada mes.</p>
+                <p class="text-xs text-indigo-900 font-medium mt-0.5">Cargá servicios fijos recurrentes para que a tus padres les aparezcan listos para tildar cada mes.</p>
             </div>
-            <button type="button" onclick="abrirModalCarga('Servicio_Fijo')" class="w-full sm:w-auto bg-indigo-700 hover:bg-indigo-800 text-white font-bold px-4 py-2.5 rounded-xl text-sm whitespace-nowrap shadow">
+            <button type="button" onclick="abrirModalCarga('Servicio_Fijo')" class="w-full sm:w-auto bg-indigo-700 hover:bg-indigo-800 text-white font-bold px-4 py-3 rounded-xl text-sm shadow text-center">
                 + Agregar Servicio Fijo
             </button>
         </section>
 
         <!-- SOLAPA 1: RESUMEN GENERAL -->
-        <div id="vista-resumen" class="space-y-6">
+        <div id="vista-resumen" class="space-y-5">
 
-            <div class="bg-amber-50 border-2 border-amber-400 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <span class="text-4xl">🛡️</span>
+            <div class="bg-amber-50 border-2 border-amber-400 rounded-3xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+                <div class="flex items-start sm:items-center gap-3">
+                    <span class="text-3xl sm:text-4xl shrink-0">🛡️</span>
                     <div>
-                        <h2 class="text-lg font-black text-amber-950">¿Te piden plata, claves o datos?</h2>
-                        <p class="text-sm text-amber-900 font-medium">Ante la duda, frená y consultá antes de transferir.</p>
+                        <h2 class="text-base sm:text-lg font-black text-amber-950 leading-snug">¿Te piden plata, claves o datos?</h2>
+                        <p class="text-xs sm:text-sm text-amber-900 font-medium mt-0.5">Ante la duda, frená y consultá antes de transferir.</p>
                     </div>
                 </div>
-                <button type="button" onclick="pedirAyudaWhatsApp()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-5 py-3.5 rounded-2xl text-base shadow-md whitespace-nowrap flex items-center justify-center gap-2">
+                <button type="button" onclick="pedirAyudaWhatsApp()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-4 py-3.5 rounded-2xl text-base shadow-md flex items-center justify-center gap-2 shrink-0">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> Consultar a mis hijos
                 </button>
             </div>
 
-            <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-3xl border-2 border-emerald-200 shadow-sm">
+            <section class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-emerald-200 shadow-sm flex sm:block justify-between items-center">
                     <p class="text-base font-bold text-slate-600">💰 Plata que entró</p>
-                    <p id="total-ingresos" class="text-3xl font-black text-emerald-700 mt-1">$0</p>
+                    <p id="total-ingresos" class="text-2xl sm:text-3xl font-black text-emerald-700 sm:mt-1">$0</p>
                 </div>
-                <div class="bg-white p-5 rounded-3xl border-2 border-rose-200 shadow-sm">
+                <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-rose-200 shadow-sm flex sm:block justify-between items-center">
                     <p class="text-base font-bold text-slate-600">🛒 Plata gastada</p>
-                    <p id="total-gastos" class="text-3xl font-black text-rose-700 mt-1">$0</p>
+                    <p id="total-gastos" class="text-2xl sm:text-3xl font-black text-rose-700 sm:mt-1">$0</p>
                 </div>
-                <div class="bg-blue-50 p-5 rounded-3xl border-2 border-blue-300 shadow-sm">
+                <div class="bg-blue-50 p-4 sm:p-5 rounded-3xl border-2 border-blue-300 shadow-sm flex sm:block justify-between items-center">
                     <p class="text-base font-bold text-blue-950">🏦 Saldo del mes</p>
-                    <p id="total-saldo" class="text-3xl font-black text-blue-800 mt-1">$0</p>
+                    <p id="total-saldo" class="text-2xl sm:text-3xl font-black text-blue-800 sm:mt-1">$0</p>
                 </div>
             </section>
 
-            <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button type="button" onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
+            <section class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <button type="button" onclick="abrirModalCarga('Gasto')" class="w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
                     <i class="fa-solid fa-minus-circle text-2xl"></i> Anotar un Gasto
                 </button>
-                <button type="button" onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
+                <button type="button" onclick="abrirModalCarga('Ingreso')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
                     <i class="fa-solid fa-plus-circle text-2xl"></i> Anotar un Ingreso
                 </button>
             </section>
 
-            <section id="seccion-alertas" class="hidden bg-red-50 border-4 border-red-500 rounded-3xl p-5 space-y-3">
-                <h3 class="text-xl font-black text-red-800 flex items-center gap-2">
-                    <i class="fa-solid fa-bell text-2xl"></i> Movimientos para revisar juntos
+            <section id="seccion-alertas" class="hidden bg-red-50 border-4 border-red-500 rounded-3xl p-4 sm:p-5 space-y-3">
+                <h3 class="text-lg sm:text-xl font-black text-red-800 flex items-center gap-2">
+                    <i class="fa-solid fa-bell text-xl sm:text-2xl"></i> Movimientos para revisar juntos
                 </h3>
-                <p class="text-base text-red-900 font-medium">Se detectaron gastos altos o transferencias que conviene chequear:</p>
+                <p class="text-sm sm:text-base text-red-900 font-medium">Se detectaron gastos altos o transferencias que conviene chequear:</p>
                 <div id="lista-alertas" class="space-y-2"></div>
             </section>
 
-            <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
-                <div class="flex justify-between items-center border-b-2 pb-2">
-                    <h3 class="text-xl font-black text-slate-800">📅 Servicios y Cuentas del Mes</h3>
+            <section class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b-2 pb-2 gap-1">
+                    <h3 class="text-lg sm:text-xl font-black text-slate-800">📅 Servicios y Cuentas del Mes</h3>
                     <span class="text-xs font-bold text-slate-500">Tocá para marcar pago</span>
                 </div>
                 <div id="lista-servicios" class="space-y-2.5">
-                    <p class="text-base text-slate-500 italic">No hay servicios fijos cargados aún.</p>
+                    <p class="text-sm sm:text-base text-slate-500 italic">No hay servicios fijos cargados aún.</p>
                 </div>
             </section>
 
-            <div class="flex justify-end">
-                <button type="button" onclick="compartirResumenWhatsApp()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-4 rounded-2xl text-lg shadow-md flex items-center justify-center gap-2">
+            <div>
+                <button type="button" onclick="compartirResumenWhatsApp()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-4 rounded-2xl text-base sm:text-lg shadow-md flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar resumen por WhatsApp
                 </button>
             </div>
 
-            <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
+            <section class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
                 <div class="border-b-2 pb-2">
-                    <h3 class="text-xl font-black text-slate-800">📊 Evolución Mensual y Cuotas Proyectadas</h3>
-                    <p class="text-sm text-slate-600 font-medium">Comparación de ingresos vs. gastos (incluye cuotas futuras ya cargadas)</p>
+                    <h3 class="text-lg sm:text-xl font-black text-slate-800">📊 Evolución Mensual y Cuotas</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 font-medium">Ingresos vs. gastos (incluye cuotas futuras cargadas)</p>
                 </div>
-                <div class="relative h-72 w-full">
+                <div class="relative h-64 sm:h-72 w-full">
                     <canvas id="grafico-evolucion"></canvas>
                 </div>
                 <p class="text-xs text-slate-500 font-medium">Nota: Los meses marcados con <strong>(proy.)</strong> muestran cuotas futuras ya comprometidas.</p>
@@ -256,21 +256,21 @@
         </div>
 
         <!-- SOLAPA 2: MOVIMIENTOS MENSUALES -->
-        <div id="vista-movimientos" class="hidden space-y-5">
+        <div id="vista-movimientos" class="hidden space-y-4">
 
-            <div class="grid grid-cols-2 gap-3">
-                <button type="button" onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
+            <div class="grid grid-cols-2 gap-2.5">
+                <button type="button" onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-3 rounded-2xl text-base shadow flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-minus-circle"></i> + Gasto
                 </button>
-                <button type="button" onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
+                <button type="button" onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-3 rounded-2xl text-base shadow flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-plus-circle"></i> + Ingreso
                 </button>
             </div>
 
-            <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-4">
-                <div class="border-b-2 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <h3 id="titulo-lista-movimientos" class="text-xl font-black text-slate-800">📋 Movimientos del mes</h3>
-                    <span class="text-xs font-bold text-slate-500">Tocá <i class="fa-solid fa-arrow-left text-rose-600"></i> si te equivocaste y querés borrar</span>
+            <section class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-4">
+                <div class="border-b-2 pb-3 space-y-1">
+                    <h3 id="titulo-lista-movimientos" class="text-lg sm:text-xl font-black text-slate-800">📋 Movimientos del mes</h3>
+                    <p class="text-xs font-bold text-slate-500">Tocá el botón <span class="text-rose-700 font-black">← Borrar</span> si te equivocaste y querés eliminarlo</p>
                 </div>
                 <div id="lista-movimientos" class="space-y-3"></div>
             </section>
@@ -361,559 +361,5 @@
             if (solapa === 'resumen') {
                 vRes.classList.remove('hidden');
                 vMov.classList.add('hidden');
-                bRes.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition";
-                bMov.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2";
-                renderizarGrafico();
-            } else {
-                vRes.classList.add('hidden');
-                vMov.classList.remove('hidden');
-                bMov.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition flex items-center justify-center gap-2";
-                bRes.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition";
-            }
-        }
-
-        function parsearTelefonosWA() {
-            if (!WA_RAW) return [];
-            return WA_RAW.split(',').map(function(item, idx) {
-                const partes = item.split(':');
-                if (partes.length === 2) {
-                    return { nombre: partes[0].trim(), tel: partes[1].replace(/\D/g, '') };
-                }
-                return { nombre: 'Hijo/a ' + (idx + 1), tel: item.replace(/\D/g, '') };
-            }).filter(function(x) { return x.tel.length >= 8; });
-        }
-
-        function cambiarModo(nuevoModo) {
-            MODO_ACTUAL = nuevoModo;
-            localStorage.setItem('padres_modo', nuevoModo);
-            aplicarUIModo();
-            renderizarPantalla();
-        }
-
-        function aplicarUIModo() {
-            const btnP = document.getElementById('btn-modo-padres');
-            const btnH = document.getElementById('btn-modo-hijos');
-            const panelHijos = document.getElementById('panel-hijos');
-
-            if (MODO_ACTUAL === 'Hijos') {
-                btnH.className = "px-3 py-1.5 rounded-lg bg-indigo-700 text-white shadow";
-                btnP.className = "px-3 py-1.5 rounded-lg text-slate-600";
-                panelHijos.classList.remove('hidden');
-            } else {
-                btnP.className = "px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow";
-                btnH.className = "px-3 py-1.5 rounded-lg text-slate-600";
-                panelHijos.classList.add('hidden');
-            }
-        }
-
-        function abrirModalConfig() {
-            document.getElementById('cfg-url').value = SB_URL;
-            document.getElementById('cfg-key').value = SB_KEY;
-            document.getElementById('cfg-wa').value = WA_RAW;
-            document.getElementById('cfg-umbral').value = UMBRAL_ALERTA;
-            document.getElementById('modal-config').classList.remove('hidden');
-        }
-
-        function cerrarModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        function guardarConfig() {
-            SB_URL = document.getElementById('cfg-url').value.trim().replace(/\/+$/, '');
-            SB_KEY = document.getElementById('cfg-key').value.trim();
-            WA_RAW = document.getElementById('cfg-wa').value.trim();
-            UMBRAL_ALERTA = parseFloat(document.getElementById('cfg-umbral').value) || 150000;
-            localStorage.setItem('padres_umbral', UMBRAL_ALERTA);
-            cerrarModal('modal-config');
-            cargarDatos();
-        }
-
-        function abrirModalCarga(tipo) {
-            document.getElementById('mov-tipo').value = tipo;
-            document.getElementById('form-movimiento').reset();
-            document.getElementById('mov-fecha').value = fechaHoyLocal();
-            document.getElementById('mov-cuotas').value = 1;
-            document.getElementById('alerta-preventiva').classList.add('hidden');
-            document.getElementById('preview-cuotas').classList.add('hidden');
-
-            const titulo = document.getElementById('modal-carga-titulo');
-            const btn = document.getElementById('btn-submit-mov');
-            const select = document.getElementById('mov-categoria');
-            const campoVenc = document.getElementById('campo-vencimiento');
-            const campoFecha = document.getElementById('campo-fecha');
-            const bloqueCuotas = document.getElementById('bloque-cuotas');
-
-            select.innerHTML = CATEGORIAS[tipo].map(function(c) {
-                return '<option value="' + c + '">' + c + '</option>';
-            }).join('');
-
-            if (tipo === 'Gasto') {
-                titulo.textContent = "🛒 Anotar un Gasto";
-                titulo.className = "text-2xl font-black text-rose-700";
-                btn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-xl mt-2";
-                campoVenc.classList.add('hidden');
-                campoFecha.classList.remove('hidden');
-                bloqueCuotas.classList.remove('hidden');
-            } else if (tipo === 'Ingreso') {
-                titulo.textContent = "💰 Anotar un Ingreso";
-                titulo.className = "text-2xl font-black text-emerald-700";
-                btn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2";
-                campoVenc.classList.add('hidden');
-                campoFecha.classList.remove('hidden');
-                bloqueCuotas.classList.add('hidden');
-            } else if (tipo === 'Servicio_Fijo') {
-                titulo.textContent = "📅 Nuevo Servicio Fijo Mensual";
-                titulo.className = "text-2xl font-black text-indigo-700";
-                btn.className = "w-full bg-indigo-700 hover:bg-indigo-800 text-white btn-xl shadow-xl mt-2";
-                campoVenc.classList.remove('hidden');
-                campoFecha.classList.add('hidden');
-                bloqueCuotas.classList.add('hidden');
-            }
-
-            document.getElementById('modal-carga').classList.remove('hidden');
-        }
-
-        function verificarRiesgoCategoria() {
-            const cat = document.getElementById('mov-categoria').value;
-            const alerta = document.getElementById('alerta-preventiva');
-            if (cat.indexOf('⚠️') !== -1) alerta.classList.remove('hidden');
-            else alerta.classList.add('hidden');
-        }
-
-        function sumarMesesAFecha(fechaStr, mesesASumar) {
-            const partes = fechaStr.split('-').map(Number);
-            const t = new Date(partes[0], partes[1] - 1 + mesesASumar, 1);
-            const y = t.getFullYear();
-            const mm = t.getMonth() + 1;
-            const ultimoDia = new Date(y, mm, 0).getDate();
-            return y + '-' + pad2(mm) + '-' + pad2(Math.min(partes[2], ultimoDia));
-        }
-
-        function calcularCuotas() {
-            const cant = Math.max(1, Math.min(48, parseInt(document.getElementById('mov-cuotas').value, 10) || 1));
-            const modo = document.getElementById('mov-modo-cuota').value;
-            const monto = parseFloat(document.getElementById('mov-monto').value) || 0;
-            const valorCuota = modo === 'total' ? Math.round((monto / cant) * 100) / 100 : monto;
-            const totalFinal = modo === 'total' ? monto : monto * cant;
-            return { cant: cant, modo: modo, monto: monto, valorCuota: valorCuota, totalFinal: totalFinal };
-        }
-
-        function actualizarPreviewCuotas() {
-            const prev = document.getElementById('preview-cuotas');
-            const fecha = document.getElementById('mov-fecha').value;
-            const c = calcularCuotas();
-            if (c.cant <= 1 || !c.monto || !fecha) {
-                prev.classList.add('hidden');
-                return;
-            }
-            const mesFin = sumarMesesAFecha(fecha, c.cant - 1).slice(0, 7);
-            prev.textContent = 'Se anotarán ' + c.cant + ' cuotas de $' + c.valorCuota.toLocaleString('es-AR') + ' desde ' + formatearYm(fecha.slice(0, 7)) + ' hasta ' + formatearYm(mesFin) + ' (Total: $' + c.totalFinal.toLocaleString('es-AR') + ').';
-            prev.classList.remove('hidden');
-        }
-
-        async function cargarDatos() {
-            const status = document.getElementById('status-conexion');
-            status.textContent = "⏳ Conectando...";
-            try {
-                const res = await fetch(SB_URL + '/rest/v1/movimientos_padres?order=fecha.desc', {
-                    headers: {
-                        'apikey': SB_KEY,
-                        'Authorization': 'Bearer ' + SB_KEY
-                    }
-                });
-                if (!res.ok) {
-                    const txt = await res.text();
-                    throw new Error('HTTP ' + res.status + ': ' + txt);
-                }
-                todosLosMovimientos = await res.json();
-
-                status.textContent = "🟢 Sincronizado con la familia";
-                status.className = "text-xs font-bold text-emerald-700";
-
-                renderizarPantalla();
-            } catch (e) {
-                console.error("Error Supabase:", e);
-                status.textContent = "🔴 Error: " + e.message;
-                status.className = "text-xs font-bold text-rose-600";
-            }
-        }
-
-        function renderizarPantalla() {
-            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
-            const ymHoy = ymActualLocal();
-            const esMesFuturo = ymSel > ymHoy;
-
-            movimientosMes = todosLosMovimientos.filter(function(m) {
-                return m.fecha && m.fecha.indexOf(ymSel) === 0;
-            });
-
-            const partesYm = ymSel.split('-');
-            const nombreMesLargo = MESES_LARGOS[parseInt(partesYm[1], 10) - 1] + ' ' + partesYm[0];
-            document.getElementById('titulo-lista-movimientos').textContent = '📋 Movimientos de ' + nombreMesLargo + (esMesFuturo ? ' (Proyectado)' : '');
-
-            let ing = 0;
-            let gas = 0;
-            let cantMovimientosReales = 0;
-            let htmlLista = "";
-            let htmlAlertas = "";
-            let hayAlertas = false;
-
-            const plantillasServicios = [];
-            todosLosMovimientos.forEach(function(m) {
-                if (m.tipo_movimiento === 'Servicio_Fijo') {
-                    const clave = m.categoria + '_' + (m.detalle || '');
-                    const existe = plantillasServicios.some(function(p) {
-                        return (p.categoria + '_' + (p.detalle || '')) === clave;
-                    });
-                    if (!existe) plantillasServicios.push(m);
-                }
-            });
-
-            let htmlServicios = "";
-            plantillasServicios.forEach(function(serv) {
-                const pagoEnMes = movimientosMes.find(function(m) {
-                    return m.tipo_movimiento === 'Gasto' &&
-                        m.categoria === serv.categoria &&
-                        (m.detalle || '') === (serv.detalle || '');
-                });
-
-                const montoEst = parseFloat(serv.monto_pesos) || 0;
-                const diaVenc = serv.dia_vencimiento || 10;
-                const detalleTxt = serv.detalle ? ' (' + serv.detalle + ')' : '';
-
-                if (pagoEnMes) {
-                    htmlServicios += '<div class="p-3.5 rounded-2xl border-2 border-emerald-300 bg-emerald-50 flex justify-between items-center">' +
-                        '<div>' +
-                            '<p class="text-lg font-black text-emerald-900">✅ ' + serv.categoria + detalleTxt + '</p>' +
-                            '<p class="text-sm text-emerald-700 font-semibold">Pagado el ' + pagoEnMes.fecha + ' · $' + parseFloat(pagoEnMes.monto_pesos).toLocaleString('es-AR') + '</p>' +
-                        '</div>' +
-                        (MODO_ACTUAL === 'Hijos' ? '<button type="button" onclick="borrarMovimiento(\'' + serv.id + '\')" class="text-xs text-slate-400 hover:text-red-600 underline">Quitar fijo</button>' : '') +
-                    '</div>';
-                } else {
-                    htmlServicios += '<div class="p-3.5 rounded-2xl border-2 border-amber-300 bg-amber-50/70 flex flex-col sm:flex-row justify-between sm:items-center gap-2">' +
-                        '<div>' +
-                            '<p class="text-lg font-black text-slate-900">⏳ ' + serv.categoria + detalleTxt + '</p>' +
-                            '<p class="text-sm text-amber-900 font-semibold">Vence aprox. día ' + diaVenc + ' · Estimado: $' + montoEst.toLocaleString('es-AR') + '</p>' +
-                        '</div>' +
-                        '<div class="flex items-center gap-2">' +
-                            '<button type="button" onclick="confirmarPagoServicio(\'' + serv.categoria.replace(/'/g, '') + '\', \'' + (serv.detalle || '').replace(/'/g, '') + '\', ' + montoEst + ')" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-base shadow">Marcar Pagado</button>' +
-                            (MODO_ACTUAL === 'Hijos' ? '<button type="button" onclick="borrarMovimiento(\'' + serv.id + '\')" class="text-xs text-slate-400 hover:text-red-600 px-2">✕</button>' : '') +
-                        '</div>' +
-                    '</div>';
-                }
-            });
-
-            document.getElementById('lista-servicios').innerHTML = htmlServicios || '<p class="text-base text-slate-500 italic">No hay servicios fijos configurados. (Se agregan desde Modo Hijos)</p>';
-
-            movimientosMes.forEach(function(m) {
-                if (m.tipo_movimiento === 'Servicio_Fijo') return;
-                cantMovimientosReales++;
-
-                const monto = parseFloat(m.monto_pesos) || 0;
-                const esRiesgoso = m.tipo_movimiento === 'Gasto' && (monto >= UMBRAL_ALERTA || (m.categoria && m.categoria.indexOf('⚠️') !== -1) || m.alerta_estafa);
-
-                if (m.tipo_movimiento === 'Ingreso') ing += monto;
-                else if (m.tipo_movimiento === 'Gasto') gas += monto;
-
-                if (esRiesgoso) {
-                    hayAlertas = true;
-                    htmlAlertas += '<div class="bg-white p-3 rounded-2xl border-2 border-red-300 flex justify-between items-center">' +
-                        '<div>' +
-                            '<p class="font-black text-red-800 text-lg">' + m.categoria + '</p>' +
-                            '<p class="text-base text-slate-700">' + (m.detalle || 'Sin detalle') + ' (' + m.fecha + ')</p>' +
-                        '</div>' +
-                        '<span class="font-black text-xl text-red-700">$' + monto.toLocaleString('es-AR') + '</span>' +
-                    '</div>';
-                }
-
-                const colorCard = m.tipo_movimiento === 'Ingreso' ? 'border-emerald-200 bg-emerald-50/50' : (esRiesgoso ? 'border-red-400 bg-red-50' : 'border-slate-200 bg-slate-50');
-                const signo = m.tipo_movimiento === 'Ingreso' ? '+' : '-';
-                const colorMonto = m.tipo_movimiento === 'Ingreso' ? 'text-emerald-700' : 'text-rose-700';
-                const badgeTipo = m.tipo_movimiento === 'Ingreso'
-                    ? '<span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold mr-1">Ingreso</span>'
-                    : '<span class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold mr-1">Gasto</span>';
-                const badgeAutor = m.cargado_por === 'Hijos' ? '<span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-bold ml-1">Cargado por hijos</span>' : '';
-
-                htmlLista += '<div class="p-4 rounded-2xl border-2 ' + colorCard + ' flex items-center justify-between gap-3">' +
-                    '<div class="min-w-0 flex-1">' +
-                        '<p class="text-lg font-black text-slate-900 leading-snug">' + badgeTipo + m.categoria + badgeAutor + '</p>' +
-                        '<p class="text-base text-slate-600 font-medium mt-0.5">' + (m.detalle || 'Sin detalle') + ' · <span class="text-sm font-bold">' + m.fecha + '</span></p>' +
-                    '</div>' +
-                    '<div class="flex items-center gap-2.5 shrink-0">' +
-                        '<span class="text-xl sm:text-2xl font-black ' + colorMonto + '">' + signo + '$' + monto.toLocaleString('es-AR') + '</span>' +
-                        '<button type="button" onclick="borrarMovimiento(\'' + m.id + '\', \'' + m.categoria.replace(/'/g, '') + '\', ' + monto + ')" title="Borrar este registro" class="bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white border-2 border-rose-300 font-black px-3.5 py-2.5 rounded-2xl text-base shadow-sm flex items-center gap-1.5 transition">' +
-                            '<i class="fa-solid fa-arrow-left"></i>' +
-                            '<span class="hidden sm:inline text-sm">Borrar</span>' +
-                        '</button>' +
-                    '</div>' +
-                '</div>';
-            });
-
-            document.getElementById('badge-cant-mov').textContent = cantMovimientosReales;
-
-            const saldo = ing - gas;
-            document.getElementById('total-ingresos').textContent = '$' + ing.toLocaleString('es-AR');
-            document.getElementById('total-gastos').textContent = '$' + gas.toLocaleString('es-AR');
-            document.getElementById('total-saldo').textContent = '$' + saldo.toLocaleString('es-AR');
-            document.getElementById('lista-movimientos').innerHTML = htmlLista || '<p class="text-lg text-slate-500">Todavía no hay movimientos anotados en este mes.</p>';
-
-            const secAlertas = document.getElementById('seccion-alertas');
-            if (hayAlertas) {
-                secAlertas.classList.remove('hidden');
-                document.getElementById('lista-alertas').innerHTML = htmlAlertas;
-            } else {
-                secAlertas.classList.add('hidden');
-            }
-
-            renderizarGrafico();
-        }
-
-        function renderizarGrafico() {
-            const ctx = document.getElementById('grafico-evolucion');
-            if (!ctx || typeof Chart === 'undefined') return;
-
-            const ymHoy = ymActualLocal();
-            const porMes = {};
-
-            todosLosMovimientos.forEach(function(m) {
-                if (!m.fecha || m.tipo_movimiento === 'Servicio_Fijo') return;
-                const k = m.fecha.slice(0, 7);
-                if (!porMes[k]) porMes[k] = { ing: 0, gas: 0 };
-                const val = parseFloat(m.monto_pesos) || 0;
-                if (m.tipo_movimiento === 'Ingreso') porMes[k].ing += val;
-                else if (m.tipo_movimiento === 'Gasto') porMes[k].gas += val;
-            });
-
-            const claves = Object.keys(porMes).sort();
-            const mesesContinuos = [];
-            if (claves.length > 0) {
-                const fin = claves[claves.length - 1] > ymHoy ? claves[claves.length - 1] : ymHoy;
-                const partes = claves[0].split('-').map(Number);
-                let a = partes[0];
-                let m = partes[1];
-                while (true) {
-                    const k = a + '-' + pad2(m);
-                    mesesContinuos.push(k);
-                    if (k >= fin) break;
-                    m++;
-                    if (m > 12) { m = 1; a++; }
-                }
-            } else {
-                mesesContinuos.push(ymHoy);
-            }
-
-            const labels = mesesContinuos.map(function(k) { return formatearYm(k) + (k > ymHoy ? ' (proy.)' : ''); });
-            const dataIng = mesesContinuos.map(function(k) { return porMes[k] ? porMes[k].ing : 0; });
-            const dataGas = mesesContinuos.map(function(k) { return porMes[k] ? porMes[k].gas : 0; });
-
-            const bgIng = mesesContinuos.map(function(k) { return k > ymHoy ? 'rgba(5, 150, 105, 0.45)' : '#059669'; });
-            const bgGas = mesesContinuos.map(function(k) { return k > ymHoy ? 'rgba(225, 29, 72, 0.45)' : '#e11d48'; });
-
-            if (chartEvolucion) chartEvolucion.destroy();
-
-            chartEvolucion = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Ingresos ($)',
-                            data: dataIng,
-                            backgroundColor: bgIng,
-                            borderRadius: 6,
-                            maxBarThickness: 45
-                        },
-                        {
-                            label: 'Gastos / Cuotas ($)',
-                            data: dataGas,
-                            backgroundColor: bgGas,
-                            borderRadius: 6,
-                            maxBarThickness: 45
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: { font: { size: 13, weight: 'bold' }, color: '#0f172a' }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(c) { return c.dataset.label + ': $' + c.parsed.y.toLocaleString('es-AR'); }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { size: 12, weight: 'bold' }, color: '#334155' },
-                            grid: { display: false }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: { size: 12 },
-                                color: '#475569',
-                                callback: function(v) { return '$' + v.toLocaleString('es-AR'); }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        async function confirmarPagoServicio(categoria, detalle, montoEstimado) {
-            const montoStr = prompt('¿Cuánto pagaste de ' + categoria + (detalle ? ' (' + detalle + ')' : '') + '?', montoEstimado);
-            if (montoStr === null) return;
-            const montoFinal = parseFloat(montoStr) || montoEstimado;
-
-            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
-            const hoyDia = pad2(new Date().getDate());
-
-            await enviarASupabase([{
-                fecha: ymSel + '-' + hoyDia,
-                tipo_movimiento: 'Gasto',
-                categoria: categoria,
-                detalle: detalle,
-                monto_pesos: montoFinal,
-                pagado: true,
-                alerta_estafa: false,
-                cargado_por: MODO_ACTUAL
-            }]);
-        }
-
-        async function guardarMovimiento(e) {
-            e.preventDefault();
-            const tipo = document.getElementById('mov-tipo').value;
-            const categoria = document.getElementById('mov-categoria').value;
-            const detalle = document.getElementById('mov-detalle').value.trim();
-            const fechaBase = document.getElementById('mov-fecha').value || fechaHoyLocal();
-            const diaVenc = parseInt(document.getElementById('mov-dia-venc').value, 10) || 10;
-
-            const c = tipo === 'Gasto'
-                ? calcularCuotas()
-                : { cant: 1, valorCuota: parseFloat(document.getElementById('mov-monto').value) || 0, totalFinal: parseFloat(document.getElementById('mov-monto').value) || 0 };
-            const esRiesgoso = tipo === 'Gasto' && (c.totalFinal >= UMBRAL_ALERTA || categoria.indexOf('⚠️') !== -1);
-
-            const filasAInsertar = [];
-            for (let i = 0; i < c.cant; i++) {
-                const fechaCuota = sumarMesesAFecha(fechaBase, i);
-                const textoDetalle = c.cant > 1
-                    ? (detalle || categoria) + ' (Cuota ' + (i + 1) + '/' + c.cant + ')'
-                    : detalle;
-
-                filasAInsertar.push({
-                    fecha: fechaCuota,
-                    tipo_movimiento: tipo,
-                    categoria: categoria,
-                    detalle: textoDetalle,
-                    monto_pesos: c.valorCuota,
-                    pagado: tipo !== 'Servicio_Fijo',
-                    dia_vencimiento: tipo === 'Servicio_Fijo' ? diaVenc : null,
-                    alerta_estafa: i === 0 ? esRiesgoso : false,
-                    cargado_por: MODO_ACTUAL
-                });
-            }
-
-            await enviarASupabase(filasAInsertar);
-            cerrarModal('modal-carga');
-
-            if (esRiesgoso && MODO_ACTUAL === 'Padres') {
-                if (confirm("⚠️ Este gasto/préstamo es de un monto alto o de transferencia.\n\n¿Querés avisarle ahora por WhatsApp a tus hijos para quedarte tranquilo/a?")) {
-                    enviarAlertaPuntualWhatsApp(categoria, detalle, c.totalFinal);
-                }
-            }
-        }
-
-        async function enviarASupabase(filas) {
-            try {
-                const res = await fetch(SB_URL + '/rest/v1/movimientos_padres', {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SB_KEY,
-                        'Authorization': 'Bearer ' + SB_KEY,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify(filas)
-                });
-                if (!res.ok) throw new Error(await res.text());
-                await cargarDatos();
-            } catch (err) {
-                alert("Error al guardar: " + err.message);
-            }
-        }
-
-        async function borrarMovimiento(id, categoria, monto) {
-            const detalleConfirm = categoria
-                ? '¿Querés borrar "' + categoria + '" por $' + parseFloat(monto).toLocaleString('es-AR') + '?'
-                : "¿Seguro que querés borrar este registro?";
-            if (!confirm(detalleConfirm)) return;
-            try {
-                await fetch(SB_URL + '/rest/v1/movimientos_padres?id=eq.' + id, {
-                    method: 'DELETE',
-                    headers: {
-                        'apikey': SB_KEY,
-                        'Authorization': 'Bearer ' + SB_KEY
-                    }
-                });
-                cargarDatos();
-            } catch (err) {
-                alert("Error al borrar.");
-            }
-        }
-
-        function elegirDestinatarioWA(mensajeCodificado) {
-            const lista = parsearTelefonosWA();
-            if (lista.length === 0) {
-                window.open('https://wa.me/?text=' + mensajeCodificado, '_blank');
-                return;
-            }
-            if (lista.length === 1) {
-                window.open('https://wa.me/' + lista[0].tel + '?text=' + mensajeCodificado, '_blank');
-                return;
-            }
-            let menu = "¿A quién le enviamos el mensaje?\n\n";
-            lista.forEach(function(item, idx) { menu += (idx + 1) + ' - ' + item.nombre + '\n'; });
-            menu += "\nEscribí el número:";
-            const resp = prompt(menu, "1");
-            if (resp === null) return;
-            const elegida = lista[parseInt(resp, 10) - 1] || lista[0];
-            window.open('https://wa.me/' + elegida.tel + '?text=' + mensajeCodificado, '_blank');
-        }
-
-        function pedirAyudaWhatsApp() {
-            const msg = encodeURIComponent("Hola, me están pidiendo plata, una transferencia o claves por teléfono/mensaje y quiero consultarlo con ustedes antes de hacer nada.");
-            elegirDestinatarioWA(msg);
-        }
-
-        function enviarAlertaPuntualWhatsApp(categoria, detalle, monto) {
-            const msg = encodeURIComponent('⚠️ Aviso de Cuentas Claras: Anoté un gasto de $' + monto.toLocaleString('es-AR') + ' en "' + categoria + '" (' + (detalle || 'sin detalle') + '). ¿Lo revisamos juntos?');
-            elegirDestinatarioWA(msg);
-        }
-
-        function compartirResumenWhatsApp() {
-            const ing = document.getElementById('total-ingresos').textContent;
-            const gas = document.getElementById('total-gastos').textContent;
-            const sal = document.getElementById('total-saldo').textContent;
-            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
-            const partes = ymSel.split('-');
-            const nombreMes = MESES_LARGOS[parseInt(partes[1], 10) - 1] + ' ' + partes[0];
-
-            let texto = '🏡 *Resumen Cuentas Claras - ' + nombreMes + '*\n\n';
-            texto += '💰 Ingresos: ' + ing + '\n';
-            texto += '🛒 Gastos: ' + gas + '\n';
-            texto += '🏦 Saldo: ' + sal + '\n\n';
-            texto += '*Movimientos del mes:*\n';
-
-            movimientosMes.filter(function(m) { return m.tipo_movimiento !== 'Servicio_Fijo'; }).slice(0, 10).forEach(function(m) {
-                const signo = m.tipo_movimiento === 'Ingreso' ? '+' : '-';
-                texto += '• ' + m.fecha.slice(5) + ': ' + m.categoria + (m.detalle ? ' (' + m.detalle + ')' : '') + ' (' + signo + '$' + parseFloat(m.monto_pesos).toLocaleString('es-AR') + ')\n';
-            });
-
-            elegirDestinatarioWA(encodeURIComponent(texto));
-        }
-    </script>
-</body>
-</html>
+                bRes.className = "py-2.5 px-2 text-sm sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition text-center";
+                bMov.className = "py-2.5 px-2 text-sm sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition
