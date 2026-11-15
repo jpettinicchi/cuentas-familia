@@ -41,12 +41,13 @@
                 <input type="text" id="cfg-url" placeholder="https://xxxx.supabase.co" class="w-full rounded-xl border-slate-300">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Supabase Anon Key *</label>
-                <input type="password" id="cfg-key" placeholder="eyJhbGci..." class="w-full rounded-xl border-slate-300">
+                <label class="block text-sm font-bold text-slate-700 mb-1">Supabase Publishable / Anon Key *</label>
+                <input type="password" id="cfg-key" placeholder="sb_publishable_..." class="w-full rounded-xl border-slate-300">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de los Hijos (ej: 54911...)</label>
-                <input type="text" id="cfg-wa" placeholder="5491122334455" class="w-full rounded-xl border-slate-300">
+                <label class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de los Hijos (separados por coma)</label>
+                <input type="text" id="cfg-wa" placeholder="Javier: 54911..., Hermana: 54911..." class="w-full rounded-xl border-slate-300">
+                <p class="text-xs text-slate-500 mt-1">Formato: <code>Nombre: 54911XXXXXXXX, Nombre2: 54911YYYYYYYY</code></p>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">Monto alerta anti-estafa ($)</label>
@@ -240,6 +241,14 @@
     </main>
 
     <script>
+        // =========================================================================
+        // 1. CREDENCIALES Y TELÉFONOS FIJOS (REEMPLAZÁ TU URL Y TELÉFONOS AQUÍ)
+        // =========================================================================
+        const DEFAULT_SB_URL = "https://pclkbapwrnkjvjtgmqcu.supabase.co";
+        const DEFAULT_SB_KEY = "sb_publishable_mdGVI-wR-CALV9X7MY_xLw_CkN8Jj1b";
+        const DEFAULT_WA_LISTA = "Javier: 5491140811857, Magui: 5491124032416,Verito:5493855748753"
+        // =========================================================================
+
         const CATEGORIAS = {
             Ingreso: [
                 "Jubilación / Pensión",
@@ -268,9 +277,9 @@
             ]
         };
 
-        let SB_URL = localStorage.getItem('padres_sb_url') || "";
-        let SB_KEY = localStorage.getItem('padres_sb_key') || "";
-        let WA_HIJO = localStorage.getItem('padres_wa_hijo') || "";
+        let SB_URL = localStorage.getItem('padres_sb_url') || DEFAULT_SB_URL;
+        let SB_KEY = localStorage.getItem('padres_sb_key') || DEFAULT_SB_KEY;
+        let WA_RAW = localStorage.getItem('padres_wa_lista') || DEFAULT_WA_LISTA;
         let UMBRAL_ALERTA = parseFloat(localStorage.getItem('padres_umbral')) || 150000;
         let MODO_ACTUAL = localStorage.getItem('padres_modo') || "Padres";
 
@@ -283,12 +292,23 @@
             document.getElementById('mov-fecha').value = hoy.toISOString().split('T')[0];
             aplicarUIModo();
 
-            if (!SB_URL || !SB_KEY) {
+            if (!SB_URL || SB_URL.includes("TU-PROYECTO") || !SB_KEY) {
                 abrirModalConfig();
             } else {
                 cargarDatos();
             }
         });
+
+        function parsearTelefonosWA() {
+            if (!WA_RAW) return [];
+            return WA_RAW.split(',').map((item, idx) => {
+                const partes = item.split(':');
+                if (partes.length === 2) {
+                    return { nombre: partes[0].trim(), tel: partes[1].replace(/\D/g, '') };
+                }
+                return { nombre: `Hijo/a ${idx + 1}`, tel: item.replace(/\D/g, '') };
+            }).filter(x => x.tel.length >= 8);
+        }
 
         function cambiarModo(nuevoModo) {
             MODO_ACTUAL = nuevoModo;
@@ -314,9 +334,9 @@
         }
 
         function abrirModalConfig() {
-            document.getElementById('cfg-url').value = SB_URL;
+            document.getElementById('cfg-url').value = SB_URL.includes("TU-PROYECTO") ? "" : SB_URL;
             document.getElementById('cfg-key').value = SB_KEY;
-            document.getElementById('cfg-wa').value = WA_HIJO;
+            document.getElementById('cfg-wa').value = WA_RAW;
             document.getElementById('cfg-umbral').value = UMBRAL_ALERTA;
             document.getElementById('modal-config').classList.remove('hidden');
         }
@@ -328,12 +348,12 @@
         function guardarConfig() {
             SB_URL = document.getElementById('cfg-url').value.trim().replace(/\/+$/, '');
             SB_KEY = document.getElementById('cfg-key').value.trim();
-            WA_HIJO = document.getElementById('cfg-wa').value.trim().replace(/\D/g, '');
+            WA_RAW = document.getElementById('cfg-wa').value.trim();
             UMBRAL_ALERTA = parseFloat(document.getElementById('cfg-umbral').value) || 150000;
 
             localStorage.setItem('padres_sb_url', SB_URL);
             localStorage.setItem('padres_sb_key', SB_KEY);
-            localStorage.setItem('padres_wa_hijo', WA_HIJO);
+            localStorage.setItem('padres_wa_lista', WA_RAW);
             localStorage.setItem('padres_umbral', UMBRAL_ALERTA);
 
             cerrarModal('modal-config');
@@ -415,10 +435,7 @@
             let htmlAlertas = "";
             let hayAlertas = false;
 
-            const mesSel = document.getElementById('filtro-mes').value;
-            const anioActual = String(new Date().getFullYear());
-
-            // 1. Renderizar Checklist de Servicios Fijos (plantillas únicas)
+            // 1. Renderizar Checklist de Servicios Fijos
             const plantillasServicios = [];
             todosLosMovimientos.forEach(m => {
                 if (m.tipo_movimiento === 'Servicio_Fijo') {
@@ -431,7 +448,6 @@
 
             let htmlServicios = "";
             plantillasServicios.forEach(serv => {
-                // Verificar si ya está pagado en el mes seleccionado
                 const pagoEnMes = movimientosMes.find(m =>
                     m.tipo_movimiento === 'Gasto' &&
                     m.categoria === serv.categoria &&
@@ -471,7 +487,7 @@
 
             document.getElementById('lista-servicios').innerHTML = htmlServicios || '<p class="text-base text-slate-500 italic">No hay servicios fijos configurados. (Se agregan desde Modo Hijos)</p>';
 
-            // 2. Renderizar Movimientos del Mes (Ingresos y Gastos)
+            // 2. Renderizar Movimientos del Mes
             movimientosMes.forEach(m => {
                 if (m.tipo_movimiento === 'Servicio_Fijo') return;
 
@@ -615,16 +631,34 @@
             }
         }
 
+        // --- FUNCIONES DE WHATSAPP CON SOPORTE MULTI-CONTACTO ---
+        function elegirDestinatarioWA(mensajeCodificado) {
+            const lista = parsearTelefonosWA();
+            if (lista.length === 0) {
+                window.open(`https://wa.me/?text=${mensajeCodificado}`, '_blank');
+                return;
+            }
+            if (lista.length === 1) {
+                window.open(`https://wa.me/${lista[0].tel}?text=${mensajeCodificado}`, '_blank');
+                return;
+            }
+            let menu = "¿A quién le enviamos el mensaje?\n\n";
+            lista.forEach((item, idx) => { menu += `${idx + 1} - ${item.nombre}\n`; });
+            menu += "\nEscribí el número:";
+            const resp = prompt(menu, "1");
+            if (resp === null) return;
+            const elegida = lista[parseInt(resp) - 1] || lista[0];
+            window.open(`https://wa.me/${elegida.tel}?text=${mensajeCodificado}`, '_blank');
+        }
+
         function pedirAyudaWhatsApp() {
             const msg = encodeURIComponent("Hola, me están pidiendo plata, una transferencia o claves por teléfono/mensaje y quiero consultarlo con ustedes antes de hacer nada.");
-            const url = WA_HIJO ? `https://wa.me/${WA_HIJO}?text=${msg}` : `https://wa.me/?text=${msg}`;
-            window.open(url, '_blank');
+            elegirDestinatarioWA(msg);
         }
 
         function enviarAlertaPuntualWhatsApp(categoria, detalle, monto) {
             const msg = encodeURIComponent(`⚠️ Aviso de Cuentas Claras: Anoté un gasto de $${monto.toLocaleString('es-AR')} en "${categoria}" (${detalle || 'sin detalle'}). ¿Lo revisamos juntos?`);
-            const url = WA_HIJO ? `https://wa.me/${WA_HIJO}?text=${msg}` : `https://wa.me/?text=${msg}`;
-            window.open(url, '_blank');
+            elegirDestinatarioWA(msg);
         }
 
         function compartirResumenWhatsApp() {
@@ -645,8 +679,7 @@
                 texto += `• ${m.fecha.slice(5)}: ${m.categoria} (${signo}$${parseFloat(m.monto_pesos).toLocaleString('es-AR')})\n`;
             });
 
-            const url = WA_HIJO ? `https://wa.me/${WA_HIJO}?text=${encodeURIComponent(texto)}` : `https://wa.me/?text=${encodeURIComponent(texto)}`;
-            window.open(url, '_blank');
+            elegirDestinatarioWA(encodeURIComponent(texto));
         }
     </script>
 </body>
