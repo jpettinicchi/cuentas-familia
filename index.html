@@ -130,132 +130,170 @@
     </div>
 
     <!-- CABECERA -->
-    <header class="bg-white border-b-2 border-slate-200 px-4 py-3 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div class="flex items-center justify-between w-full sm:w-auto">
-                <div>
-                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">🏡 Cuentas Claras</h1>
-                    <p id="status-conexion" class="text-xs font-bold text-slate-500">Conectando...</p>
-                </div>
-                <button onclick="abrirModalConfig()" class="sm:hidden p-2.5 bg-slate-100 rounded-xl text-slate-600 border border-slate-300">
-                    <i class="fa-solid fa-gear text-lg"></i>
-                </button>
-            </div>
-
-            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
-                <!-- SELECTOR DE PERFIL -->
-                <div class="bg-slate-100 p-1 rounded-xl border border-slate-300 flex text-xs font-extrabold">
-                    <button id="btn-modo-padres" onclick="cambiarModo('Padres')" class="px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow">👴👵 Padres</button>
-                    <button id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="px-3 py-1.5 rounded-lg text-slate-600">👨‍👩‍👧 Hijos</button>
+    <header class="bg-white border-b-2 border-slate-200 px-4 pt-3 pb-0 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-3xl mx-auto space-y-3">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="flex items-center justify-between w-full sm:w-auto">
+                    <div>
+                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">🏡 Cuentas Claras</h1>
+                        <p id="status-conexion" class="text-xs font-bold text-slate-500">Conectando...</p>
+                    </div>
+                    <button onclick="abrirModalConfig()" class="sm:hidden p-2.5 bg-slate-100 rounded-xl text-slate-600 border border-slate-300">
+                        <i class="fa-solid fa-gear text-lg"></i>
+                    </button>
                 </div>
 
-                <!-- SELECTOR MES Y AÑO -->
-                <input type="month" id="filtro-mes-anio" onchange="renderizarPantalla()" class="bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm py-1.5 px-2.5">
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
+                    <!-- SELECTOR DE PERFIL -->
+                    <div class="bg-slate-100 p-1 rounded-xl border border-slate-300 flex text-xs font-extrabold">
+                        <button id="btn-modo-padres" onclick="cambiarModo('Padres')" class="px-3 py-1.5 rounded-lg bg-blue-700 text-white shadow">👴👵 Padres</button>
+                        <button id="btn-modo-hijos" onclick="cambiarModo('Hijos')" class="px-3 py-1.5 rounded-lg text-slate-600">👨‍👩‍👧 Hijos</button>
+                    </div>
 
-                <button onclick="abrirModalConfig()" class="hidden sm:block p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300" title="Configuración">
-                    <i class="fa-solid fa-gear text-lg"></i>
-                </button>
+                    <!-- SELECTOR MES Y AÑO -->
+                    <input type="month" id="filtro-mes-anio" onchange="renderizarPantalla()" class="bg-slate-100 border-2 border-slate-300 rounded-xl font-bold text-sm py-1.5 px-2.5">
+
+                    <button onclick="abrirModalConfig()" class="hidden sm:block p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 border-2 border-slate-300" title="Configuración">
+                        <i class="fa-solid fa-gear text-lg"></i>
+                    </button>
+                </div>
             </div>
+
+            <!-- BARRA DE SOLAPAS (PESTAÑAS) -->
+            <nav class="grid grid-cols-2 gap-2 pt-1">
+                <button id="tab-btn-resumen" onclick="cambiarSolapa('resumen')" class="py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition">
+                    🏠 Resumen
+                </button>
+                <button id="tab-btn-movimientos" onclick="cambiarSolapa('movimientos')" class="py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2">
+                    📋 Movimientos <span id="badge-cant-mov" class="bg-slate-200 text-slate-800 text-xs font-black px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </nav>
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto p-4 space-y-6">
+    <main class="max-w-3xl mx-auto p-4">
 
-        <!-- ESCUDO ANTI-ESTAFAS -->
-        <div class="bg-amber-50 border-2 border-amber-400 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-            <div class="flex items-center gap-3">
-                <span class="text-4xl">🛡️</span>
-                <div>
-                    <h2 class="text-lg font-black text-amber-950">¿Te piden plata, claves o datos?</h2>
-                    <p class="text-sm text-amber-900 font-medium">Ante la duda, frená y consultá antes de transferir.</p>
+        <!-- =============================================================== -->
+        <!-- SOLAPA 1: RESUMEN GENERAL                                       -->
+        <!-- =============================================================== -->
+        <div id="vista-resumen" class="space-y-6">
+
+            <!-- ESCUDO ANTI-ESTAFAS -->
+            <div class="bg-amber-50 border-2 border-amber-400 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🛡️</span>
+                    <div>
+                        <h2 class="text-lg font-black text-amber-950">¿Te piden plata, claves o datos?</h2>
+                        <p class="text-sm text-amber-900 font-medium">Ante la duda, frená y consultá antes de transferir.</p>
+                    </div>
                 </div>
+                <button onclick="pedirAyudaWhatsApp()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-5 py-3.5 rounded-2xl text-base shadow-md whitespace-nowrap flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i> Consultar a mis hijos
+                </button>
             </div>
-            <button onclick="pedirAyudaWhatsApp()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-5 py-3.5 rounded-2xl text-base shadow-md whitespace-nowrap flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-2xl"></i> Consultar a mis hijos
-            </button>
+
+            <!-- RESUMEN DEL MES -->
+            <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-3xl border-2 border-emerald-200 shadow-sm">
+                    <p class="text-base font-bold text-slate-600">💰 Plata que entró</p>
+                    <p id="total-ingresos" class="text-3xl font-black text-emerald-700 mt-1">$0</p>
+                </div>
+                <div class="bg-white p-5 rounded-3xl border-2 border-rose-200 shadow-sm">
+                    <p class="text-base font-bold text-slate-600">🛒 Plata gastada</p>
+                    <p id="total-gastos" class="text-3xl font-black text-rose-700 mt-1">$0</p>
+                </div>
+                <div class="bg-blue-50 p-5 rounded-3xl border-2 border-blue-300 shadow-sm">
+                    <p class="text-base font-bold text-blue-950">🏦 Saldo del mes</p>
+                    <p id="total-saldo" class="text-3xl font-black text-blue-800 mt-1">$0</p>
+                </div>
+            </section>
+
+            <!-- BOTONES PRINCIPALES -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-minus-circle text-2xl"></i> Anotar un Gasto
+                </button>
+                <button onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-plus-circle text-2xl"></i> Anotar un Ingreso
+                </button>
+            </section>
+
+            <!-- PANEL EXCLUSIVO MODO HIJOS -->
+            <section id="panel-hijos" class="hidden bg-indigo-50 border-2 border-indigo-300 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div>
+                    <p class="font-black text-indigo-950 text-base">👨‍👩‍👧 Herramientas de Asistencia (Hijos)</p>
+                    <p class="text-xs text-indigo-800">Cargá servicios fijos recurrentes para que a tus padres les aparezcan listos para tildar cada mes.</p>
+                </div>
+                <button onclick="abrirModalCarga('Servicio_Fijo')" class="w-full sm:w-auto bg-indigo-700 hover:bg-indigo-800 text-white font-bold px-4 py-2.5 rounded-xl text-sm whitespace-nowrap shadow">
+                    + Agregar Servicio Fijo
+                </button>
+            </section>
+
+            <!-- ALERTAS PARA REVISAR -->
+            <section id="seccion-alertas" class="hidden bg-red-50 border-4 border-red-500 rounded-3xl p-5 space-y-3">
+                <h3 class="text-xl font-black text-red-800 flex items-center gap-2">
+                    <i class="fa-solid fa-bell text-2xl"></i> Movimientos para revisar juntos
+                </h3>
+                <p class="text-base text-red-900 font-medium">Se detectaron gastos altos o transferencias que conviene chequear:</p>
+                <div id="lista-alertas" class="space-y-2"></div>
+            </section>
+
+            <!-- CHECKLIST DE SERVICIOS FIJOS DEL MES -->
+            <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
+                <div class="flex justify-between items-center border-b-2 pb-2">
+                    <h3 class="text-xl font-black text-slate-800">📅 Servicios y Cuentas del Mes</h3>
+                    <span class="text-xs font-bold text-slate-500">Tocá para marcar pago</span>
+                </div>
+                <div id="lista-servicios" class="space-y-2.5">
+                    <p class="text-base text-slate-500 italic">No hay servicios fijos cargados aún.</p>
+                </div>
+            </section>
+
+            <!-- COMPARTIR POR WHATSAPP -->
+            <div class="flex justify-end">
+                <button onclick="compartirResumenWhatsApp()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-4 rounded-2xl text-lg shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar resumen por WhatsApp
+                </button>
+            </div>
+
+            <!-- GRÁFICO DE BARRAS: ACTUALES Y PROYECTADOS (INGRESOS VS EGRESOS) -->
+            <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
+                <div class="border-b-2 pb-2">
+                    <h3 class="text-xl font-black text-slate-800">📊 Evolución Mensual y Cuotas Proyectadas</h3>
+                    <p class="text-sm text-slate-600 font-medium">Comparación de ingresos vs. gastos (incluye cuotas futuras ya cargadas)</p>
+                </div>
+                <div class="relative h-72 w-full">
+                    <canvas id="grafico-evolucion"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 font-medium">Nota: Los meses marcados con <strong>(proy.)</strong> muestran cuotas futuras ya comprometidas.</p>
+            </section>
+
         </div>
 
-        <!-- RESUMEN DEL MES -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="bg-white p-5 rounded-3xl border-2 border-emerald-200 shadow-sm">
-                <p class="text-base font-bold text-slate-600">💰 Plata que entró</p>
-                <p id="total-ingresos" class="text-3xl font-black text-emerald-700 mt-1">$0</p>
-            </div>
-            <div class="bg-white p-5 rounded-3xl border-2 border-rose-200 shadow-sm">
-                <p class="text-base font-bold text-slate-600">🛒 Plata gastada</p>
-                <p id="total-gastos" class="text-3xl font-black text-rose-700 mt-1">$0</p>
-            </div>
-            <div class="bg-blue-50 p-5 rounded-3xl border-2 border-blue-300 shadow-sm">
-                <p class="text-base font-bold text-blue-950">🏦 Saldo del mes</p>
-                <p id="total-saldo" class="text-3xl font-black text-blue-800 mt-1">$0</p>
-            </div>
-        </section>
+        <!-- =============================================================== -->
+        <!-- SOLAPA 2: MOVIMIENTOS MENSUALES (CON FLECHITA PARA BORRAR)      -->
+        <!-- =============================================================== -->
+        <div id="vista-movimientos" class="hidden space-y-5">
 
-        <!-- BOTONES PRINCIPALES -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <button onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
-                <i class="fa-solid fa-minus-circle text-2xl"></i> Anotar un Gasto
-            </button>
-            <button onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-lg flex items-center justify-center gap-3">
-                <i class="fa-solid fa-plus-circle text-2xl"></i> Anotar un Ingreso
-            </button>
-        </section>
-
-        <!-- PANEL EXCLUSIVO MODO HIJOS -->
-        <section id="panel-hijos" class="hidden bg-indigo-50 border-2 border-indigo-300 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div>
-                <p class="font-black text-indigo-950 text-base">👨‍👩‍👧 Herramientas de Asistencia (Hijos)</p>
-                <p class="text-xs text-indigo-800">Cargá servicios fijos recurrentes para que a tus padres les aparezcan listos para tildar cada mes.</p>
+            <!-- ACCESOS RÁPIDOS PARA VOLVER A CARGAR SI CORRIGIERON ALGO -->
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="abrirModalCarga('Gasto')" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-minus-circle"></i> + Gasto
+                </button>
+                <button onclick="abrirModalCarga('Ingreso')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-2xl text-base shadow flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus-circle"></i> + Ingreso
+                </button>
             </div>
-            <button onclick="abrirModalCarga('Servicio_Fijo')" class="w-full sm:w-auto bg-indigo-700 hover:bg-indigo-800 text-white font-bold px-4 py-2.5 rounded-xl text-sm whitespace-nowrap shadow">
-                + Agregar Servicio Fijo
-            </button>
-        </section>
 
-        <!-- ALERTAS PARA REVISAR -->
-        <section id="seccion-alertas" class="hidden bg-red-50 border-4 border-red-500 rounded-3xl p-5 space-y-3">
-            <h3 class="text-xl font-black text-red-800 flex items-center gap-2">
-                <i class="fa-solid fa-bell text-2xl"></i> Movimientos para revisar juntos
-            </h3>
-            <p class="text-base text-red-900 font-medium">Se detectaron gastos altos o transferencias que conviene chequear:</p>
-            <div id="lista-alertas" class="space-y-2"></div>
-        </section>
+            <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-4">
+                <div class="border-b-2 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <h3 id="titulo-lista-movimientos" class="text-xl font-black text-slate-800">📋 Movimientos del mes</h3>
+                    <span class="text-xs font-bold text-slate-500">Tocá <i class="fa-solid fa-arrow-left text-rose-600"></i> si te equivocaste y querés borrar</span>
+                </div>
+                <div id="lista-movimientos" class="space-y-3"></div>
+            </section>
 
-        <!-- CHECKLIST DE SERVICIOS FIJOS DEL MES -->
-        <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
-            <div class="flex justify-between items-center border-b-2 pb-2">
-                <h3 class="text-xl font-black text-slate-800">📅 Servicios y Cuentas del Mes</h3>
-                <span class="text-xs font-bold text-slate-500">Tocá para marcar pago</span>
-            </div>
-            <div id="lista-servicios" class="space-y-2.5">
-                <p class="text-base text-slate-500 italic">No hay servicios fijos cargados aún.</p>
-            </div>
-        </section>
-
-        <!-- COMPARTIR POR WHATSAPP -->
-        <div class="flex justify-end">
-            <button onclick="compartirResumenWhatsApp()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-4 rounded-2xl text-lg shadow-md flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar resumen por WhatsApp
-            </button>
         </div>
-
-        <!-- HISTORIAL DE MOVIMIENTOS -->
-        <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-4">
-            <h3 id="titulo-lista-movimientos" class="text-xl font-black text-slate-800 border-b-2 pb-3">📋 Movimientos del mes</h3>
-            <div id="lista-movimientos" class="space-y-3"></div>
-        </section>
-
-        <!-- GRÁFICO DE BARRAS: ACTUALES Y PROYECTADOS (INGRESOS VS EGRESOS) -->
-        <section class="bg-white p-5 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
-            <div class="border-b-2 pb-2">
-                <h3 class="text-xl font-black text-slate-800">📊 Evolución Mensual y Cuotas Proyectadas</h3>
-                <p class="text-sm text-slate-600 font-medium">Comparación de ingresos vs. gastos (incluye cuotas futuras ya cargadas)</p>
-            </div>
-            <div class="relative h-72 w-full">
-                <canvas id="grafico-evolucion"></canvas>
-            </div>
-            <p class="text-xs text-slate-500 font-medium">Nota: Los meses marcados con <strong>(proy.)</strong> muestran cuotas futuras ya comprometidas.</p>
-        </section>
 
     </main>
 
@@ -305,6 +343,7 @@
         let WA_RAW = localStorage.getItem('padres_wa_lista') || DEFAULT_WA_LISTA;
         let UMBRAL_ALERTA = parseFloat(localStorage.getItem('padres_umbral')) || 150000;
         let MODO_ACTUAL = localStorage.getItem('padres_modo') || "Padres";
+        let SOLAPA_ACTUAL = "resumen";
 
         let todosLosMovimientos = [];
         let movimientosMes = [];
@@ -317,33 +356,7 @@
         };
         const fechaHoyLocal = () => {
             const d = new Date();
-            return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-        };
-        const formatearYm = ym => {
-            const [a, m] = ym.split('-');
-            return `${MESES_CORTOS[parseInt(m) - 1]} ${a}`;
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('filtro-mes-anio').value = ymActualLocal();
-            document.getElementById('mov-fecha').value = fechaHoyLocal();
-            aplicarUIModo();
-
-            if (!SB_URL || SB_URL.includes("TU-PROYECTO") || !SB_KEY) {
-                abrirModalConfig();
-            } else {
-                cargarDatos();
-            }
-        });
-
-        function parsearTelefonosWA() {
-            if (!WA_RAW) return [];
-            return WA_RAW.split(',').map((item, idx) => {
-                const partes = item.split(':');
-                if (partes.length === 2) {
-                    return { nombre: partes[0].trim(), tel: partes[1].replace(/\D/g, '') };
-                }
-                return { nombre: `Hijo/a ${idx + 1}`, tel: item.replace(/\D/g, '') };
+            return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; }; const formatearYm = ym => { const [a, m] = ym.split('-'); return `${MESES_CORTOS[parseInt(m) - 1]} ${a}`; };  document.addEventListener("DOMContentLoaded", () => { document.getElementById('filtro-mes-anio').value = ymActualLocal(); document.getElementById('mov-fecha').value = fechaHoyLocal(); aplicarUIModo();  if (!SB_URL \vert{}\vert{} SB_URL.includes("TU-PROYECTO") \vert{}\vert{} !SB_KEY) { abrirModalConfig(); } else { cargarDatos(); } });  // --- CAMBIO DE SOLAPA --- function cambiarSolapa(solapa) { SOLAPA_ACTUAL = solapa; const vRes = document.getElementById('vista-resumen'); const vMov = document.getElementById('vista-movimientos'); const bRes = document.getElementById('tab-btn-resumen'); const bMov = document.getElementById('tab-btn-movimientos');  if (solapa === 'resumen') { vRes.classList.remove('hidden'); vMov.classList.add('hidden'); bRes.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition"; bMov.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center justify-center gap-2"; renderizarGrafico(); } else { vRes.classList.add('hidden'); vMov.classList.remove('hidden'); bMov.className = "py-3 px-3 text-base sm:text-lg font-black rounded-t-2xl border-b-4 border-blue-700 text-blue-800 bg-blue-50/70 transition flex items-center justify-center gap-2"; bRes.className = "py-3 px-3 text-base sm:text-lg font-extrabold rounded-t-2xl border-b-4 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"; } }  function parsearTelefonosWA() { if (!WA_RAW) return []; return WA_RAW.split(',').map((item, idx) => { const partes = item.split(':'); if (partes.length === 2) { return { nombre: partes[0].trim(), tel: partes[1].replace(/\D/g, '') }; } return { nombre: `Hijo/a ${idx + 1}`, tel: item.replace(/\D/g, '') };
             }).filter(x => x.tel.length >= 8);
         }
 
@@ -412,48 +425,7 @@
             const campoFecha = document.getElementById('campo-fecha');
             const bloqueCuotas = document.getElementById('bloque-cuotas');
 
-            select.innerHTML = CATEGORIAS[tipo].map(c => `<option value="${c}">${c}</option>`).join('');
-
-            if (tipo === 'Gasto') {
-                titulo.textContent = "🛒 Anotar un Gasto";
-                titulo.className = "text-2xl font-black text-rose-700";
-                btn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-xl mt-2";
-                campoVenc.classList.add('hidden');
-                campoFecha.classList.remove('hidden');
-                bloqueCuotas.classList.remove('hidden');
-            } else if (tipo === 'Ingreso') {
-                titulo.textContent = "💰 Anotar un Ingreso";
-                titulo.className = "text-2xl font-black text-emerald-700";
-                btn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2";
-                campoVenc.classList.add('hidden');
-                campoFecha.classList.remove('hidden');
-                bloqueCuotas.classList.add('hidden');
-            } else if (tipo === 'Servicio_Fijo') {
-                titulo.textContent = "📅 Nuevo Servicio Fijo Mensual";
-                titulo.className = "text-2xl font-black text-indigo-700";
-                btn.className = "w-full bg-indigo-700 hover:bg-indigo-800 text-white btn-xl shadow-xl mt-2";
-                campoVenc.classList.remove('hidden');
-                campoFecha.classList.add('hidden');
-                bloqueCuotas.classList.add('hidden');
-            }
-
-            document.getElementById('modal-carga').classList.remove('hidden');
-        }
-
-        function verificarRiesgoCategoria() {
-            const cat = document.getElementById('mov-categoria').value;
-            const alerta = document.getElementById('alerta-preventiva');
-            if (cat.includes('⚠️')) alerta.classList.remove('hidden');
-            else alerta.classList.add('hidden');
-        }
-
-        // --- LÓGICA DE CUOTAS ---
-        function sumarMesesAFecha(fechaStr, mesesASumar) {
-            const [a, m, d] = fechaStr.split('-').map(Number);
-            const t = new Date(a, m - 1 + mesesASumar, 1);
-            const y = t.getFullYear(), mm = t.getMonth() + 1;
-            const ultimoDia = new Date(y, mm, 0).getDate();
-            return `${y}-${pad2(mm)}-${pad2(Math.min(d, ultimoDia))}`;
+            select.innerHTML = CATEGORIAS[tipo].map(c => `<option value="${c}">${c}</option>`).join('');  if (tipo === 'Gasto') { titulo.textContent = "🛒 Anotar un Gasto"; titulo.className = "text-2xl font-black text-rose-700"; btn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white btn-xl shadow-xl mt-2"; campoVenc.classList.add('hidden'); campoFecha.classList.remove('hidden'); bloqueCuotas.classList.remove('hidden'); } else if (tipo === 'Ingreso') { titulo.textContent = "💰 Anotar un Ingreso"; titulo.className = "text-2xl font-black text-emerald-700"; btn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white btn-xl shadow-xl mt-2"; campoVenc.classList.add('hidden'); campoFecha.classList.remove('hidden'); bloqueCuotas.classList.add('hidden'); } else if (tipo === 'Servicio_Fijo') { titulo.textContent = "📅 Nuevo Servicio Fijo Mensual"; titulo.className = "text-2xl font-black text-indigo-700"; btn.className = "w-full bg-indigo-700 hover:bg-indigo-800 text-white btn-xl shadow-xl mt-2"; campoVenc.classList.remove('hidden'); campoFecha.classList.add('hidden'); bloqueCuotas.classList.add('hidden'); }  document.getElementById('modal-carga').classList.remove('hidden'); }  function verificarRiesgoCategoria() { const cat = document.getElementById('mov-categoria').value; const alerta = document.getElementById('alerta-preventiva'); if (cat.includes('⚠️')) alerta.classList.remove('hidden'); else alerta.classList.add('hidden'); }  // --- LÓGICA DE CUOTAS --- function sumarMesesAFecha(fechaStr, mesesASumar) { const [a, m, d] = fechaStr.split('-').map(Number); const t = new Date(a, m - 1 + mesesASumar, 1); const y = t.getFullYear(), mm = t.getMonth() + 1; const ultimoDia = new Date(y, mm, 0).getDate(); return `${y}-${pad2(mm)}-${pad2(Math.min(d, ultimoDia))}`;
         }
 
         function calcularCuotas() {
@@ -474,7 +446,7 @@
                 return;
             }
             const mesFin = sumarMesesAFecha(fecha, c.cant - 1).slice(0, 7);
-            prev.textContent = `Se anotarán ${c.cant} cuotas de $${c.valorCuota.toLocaleString('es-AR')} desde ${formatearYm(fecha.slice(0, 7))} hasta ${formatearYm(mesFin)} (Total: $${c.totalFinal.toLocaleString('es-AR')}).`;
+            prev.textContent = `Se anotarán ${c.cant} cuotas de$${c.valorCuota.toLocaleString('es-AR')} desde${formatearYm(fecha.slice(0, 7))} hasta ${formatearYm(mesFin)} (Total:$${c.totalFinal.toLocaleString('es-AR')}).`;
             prev.classList.remove('hidden');
         }
 
@@ -482,8 +454,7 @@
             if (!SB_URL || !SB_KEY) return;
             const status = document.getElementById('status-conexion');
             try {
-                const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres?order=fecha.desc`, {
-                    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+                const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres?order=fecha.desc`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
                 });
                 if (!res.ok) throw new Error("Error de conexión");
                 todosLosMovimientos = await res.json();
@@ -506,11 +477,12 @@
             movimientosMes = todosLosMovimientos.filter(m => m.fecha && m.fecha.startsWith(ymSel));
 
             const [anioTexto, mesTexto] = ymSel.split('-');
-            const nombreMesLargo = `${MESES_LARGOS[parseInt(mesTexto) - 1]} ${anioTexto}`;
+            const nombreMesLargo = `${MESES_LARGOS[parseInt(mesTexto) - 1]}${anioTexto}`;
             document.getElementById('titulo-lista-movimientos').textContent = `📋 Movimientos de ${nombreMesLargo}${esMesFuturo ? ' (Proyectado)' : ''}`;
 
             let ing = 0;
             let gas = 0;
+            let cantMovimientosReales = 0;
             let htmlLista = "";
             let htmlAlertas = "";
             let hayAlertas = false;
@@ -541,8 +513,8 @@
                     htmlServicios += `
                         <div class="p-3.5 rounded-2xl border-2 border-emerald-300 bg-emerald-50 flex justify-between items-center">
                             <div>
-                                <p class="text-lg font-black text-emerald-900">✅ ${serv.categoria} ${serv.detalle ? `(${serv.detalle})` : ''}</p>
-                                <p class="text-sm text-emerald-700 font-semibold">Pagado el ${pagoEnMes.fecha} · $${parseFloat(pagoEnMes.monto_pesos).toLocaleString('es-AR')}</p>
+                                <p class="text-lg font-black text-emerald-900">✅ ${serv.categoria}${serv.detalle ? `(${serv.detalle})` : ''}</p>
+                                <p class="text-sm text-emerald-700 font-semibold">Pagado el ${pagoEnMes.fecha} ·$${parseFloat(pagoEnMes.monto_pesos).toLocaleString('es-AR')}</p>
                             </div>
                             ${MODO_ACTUAL === 'Hijos' ? `<button onclick="borrarMovimiento('${serv.id}')" class="text-xs text-slate-400 hover:text-red-600 underline">Quitar fijo</button>` : ''}
                         </div>
@@ -551,11 +523,11 @@
                     htmlServicios += `
                         <div class="p-3.5 rounded-2xl border-2 border-amber-300 bg-amber-50/70 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                             <div>
-                                <p class="text-lg font-black text-slate-900">⏳ ${serv.categoria} ${serv.detalle ? `(${serv.detalle})` : ''}</p>
+                                <p class="text-lg font-black text-slate-900">⏳ ${serv.categoria}${serv.detalle ? `(${serv.detalle})` : ''}</p>
                                 <p class="text-sm text-amber-900 font-semibold">Vence aprox. día ${diaVenc} · Estimado: $${montoEst.toLocaleString('es-AR')}</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="confirmarPagoServicio('${serv.categoria}', '${serv.detalle || ''}', ${montoEst})" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-base shadow">
+                                <button onclick="confirmarPagoServicio('${serv.categoria}', '${serv.detalle \vert{}\vert{} ''}',${montoEst})" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-base shadow">
                                     Marcar Pagado
                                 </button>
                                 ${MODO_ACTUAL === 'Hijos' ? `<button onclick="borrarMovimiento('${serv.id}')" class="text-xs text-slate-400 hover:text-red-600 px-2">✕</button>` : ''}
@@ -567,9 +539,10 @@
 
             document.getElementById('lista-servicios').innerHTML = htmlServicios || '<p class="text-base text-slate-500 italic">No hay servicios fijos configurados. (Se agregan desde Modo Hijos)</p>';
 
-            // 2. Movimientos del Mes
+            // 2. Movimientos del Mes (Solapa Movimientos)
             movimientosMes.forEach(m => {
                 if (m.tipo_movimiento === 'Servicio_Fijo') return;
+                cantMovimientosReales++;
 
                 const monto = parseFloat(m.monto_pesos) || 0;
                 const esRiesgoso = m.tipo_movimiento === 'Gasto' && (monto >= UMBRAL_ALERTA || (m.categoria && m.categoria.includes('⚠️')) || m.alerta_estafa);
@@ -583,38 +556,29 @@
                         <div class="bg-white p-3 rounded-2xl border-2 border-red-300 flex justify-between items-center">
                             <div>
                                 <p class="font-black text-red-800 text-lg">${m.categoria}</p>
-                                <p class="text-base text-slate-700">${m.detalle || 'Sin detalle'} (${m.fecha})</p>
-                            </div>
-                            <span class="font-black text-xl text-red-700">$${monto.toLocaleString('es-AR')}</span>
+                                <p class="text-base text-slate-700">${m.detalle || 'Sin detalle'} (${m.fecha})</p> </div> <span class="font-black text-xl text-red-700">$${monto.toLocaleString('es-AR')}</span>
                         </div>
                     `;
                 }
 
-                const colorCard = m.tipo_movimiento === 'Ingreso' ? 'border-emerald-200 bg-emerald-50/40' : (esRiesgoso ? 'border-red-400 bg-red-50' : 'border-slate-200 bg-slate-50');
+                const colorCard = m.tipo_movimiento === 'Ingreso' ? 'border-emerald-200 bg-emerald-50/50' : (esRiesgoso ? 'border-red-400 bg-red-50' : 'border-slate-200 bg-slate-50');
                 const signo = m.tipo_movimiento === 'Ingreso' ? '+' : '-';
                 const colorMonto = m.tipo_movimiento === 'Ingreso' ? 'text-emerald-700' : 'text-rose-700';
+                const badgeTipo = m.tipo_movimiento === 'Ingreso'
+                    ? '<span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold mr-1">Ingreso</span>'
+                    : '<span class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold mr-1">Gasto</span>';
                 const badgeAutor = m.cargado_por === 'Hijos' ? '<span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-bold ml-1">Cargado por hijos</span>' : '';
 
                 htmlLista += `
-                    <div class="p-4 rounded-2xl border-2 ${colorCard} flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                        <div>
-                            <p class="text-lg font-black text-slate-900">${m.categoria} ${badgeAutor}</p>
-                            <p class="text-base text-slate-600 font-medium">${m.detalle || ''} · <span class="text-sm">${m.fecha}</span></p>
+                    <div class="p-4 rounded-2xl border-2 ${colorCard} flex items-center justify-between gap-3">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-lg font-black text-slate-900 leading-snug">${badgeTipo}${m.categoria}${badgeAutor}</p>
+                            <p class="text-base text-slate-600 font-medium mt-0.5">${m.detalle || 'Sin detalle'} · <span class="text-sm font-bold">${m.fecha}</span></p>
                         </div>
-                        <div class="flex items-center justify-between sm:justify-end gap-3">
-                            <span class="text-2xl font-black ${colorMonto}">${signo}$${monto.toLocaleString('es-AR')}</span>
-                            <button onclick="borrarMovimiento('${m.id}')" class="bg-slate-200 hover:bg-rose-200 text-slate-700 hover:text-rose-800 font-bold px-3 py-1.5 rounded-xl text-sm">
-                                Borrar
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            const saldo = ing - gas;
-            document.getElementById('total-ingresos').textContent = `$${ing.toLocaleString('es-AR')}`;
-            document.getElementById('total-gastos').textContent = `$${gas.toLocaleString('es-AR')}`;
-            document.getElementById('total-saldo').textContent = `$${saldo.toLocaleString('es-AR')}`;
+                        <div class="flex items-center gap-2.5 shrink-0">
+                            <span class="text-xl sm:text-2xl font-black ${colorMonto}">${signo}$${monto.toLocaleString('es-AR')}</span>
+                            <button onclick="borrarMovimiento('${m.id}', '${m.categoria.replace(/'/g, '')}', ${monto})" title="Borrar este registro" class="bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white border-2 border-rose-300 font-black px-3.5 py-2.5 rounded-2xl text-base shadow-sm flex items-center gap-1.5 transition"> <i class="fa-solid fa-arrow-left"></i> <span class="hidden sm:inline text-sm">Borrar</span> </button> </div> </div> `; });  document.getElementById('badge-cant-mov').textContent = cantMovimientosReales;  const saldo = ing - gas; document.getElementById('total-ingresos').textContent = `$${ing.toLocaleString('es-AR')}`;
+            document.getElementById('total-gastos').textContent = `$${gas.toLocaleString('es-AR')}`; document.getElementById('total-saldo').textContent = `$${saldo.toLocaleString('es-AR')}`;
             document.getElementById('lista-movimientos').innerHTML = htmlLista || '<p class="text-lg text-slate-500">Todavía no hay movimientos anotados en este mes.</p>';
 
             const secAlertas = document.getElementById('seccion-alertas');
@@ -698,7 +662,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: c => `${c.dataset.label}: $${c.parsed.y.toLocaleString('es-AR')}`
+                                label: c => `${c.dataset.label}:$${c.parsed.y.toLocaleString('es-AR')}`
                             }
                         }
                     },
@@ -721,41 +685,7 @@
         }
 
         async function confirmarPagoServicio(categoria, detalle, montoEstimado) {
-            const montoStr = prompt(`¿Cuánto pagaste de ${categoria}${detalle ? ' (' + detalle + ')' : ''}?`, montoEstimado);
-            if (montoStr === null) return;
-            const montoFinal = parseFloat(montoStr) || montoEstimado;
-
-            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
-            const hoyDia = pad2(new Date().getDate());
-
-            await enviarASupabase([{
-                fecha: `${ymSel}-${hoyDia}`,
-                tipo_movimiento: 'Gasto',
-                categoria: categoria,
-                detalle: detalle,
-                monto_pesos: montoFinal,
-                pagado: true,
-                alerta_estafa: false,
-                cargado_por: MODO_ACTUAL
-            }]);
-        }
-
-        async function guardarMovimiento(e) {
-            e.preventDefault();
-            const tipo = document.getElementById('mov-tipo').value;
-            const categoria = document.getElementById('mov-categoria').value;
-            const detalle = document.getElementById('mov-detalle').value.trim();
-            const fechaBase = document.getElementById('mov-fecha').value || fechaHoyLocal();
-            const diaVenc = parseInt(document.getElementById('mov-dia-venc').value) || 10;
-
-            const c = tipo === 'Gasto' ? calcularCuotas() : { cant: 1, valorCuota: parseFloat(document.getElementById('mov-monto').value) || 0, totalFinal: parseFloat(document.getElementById('mov-monto').value) || 0 };
-            const esRiesgoso = tipo === 'Gasto' && (c.totalFinal >= UMBRAL_ALERTA || categoria.includes('⚠️'));
-
-            const filasAInsertar = [];
-            for (let i = 0; i < c.cant; i++) {
-                const fechaCuota = sumarMesesAFecha(fechaBase, i);
-                const textoDetalle = c.cant > 1
-                    ? `${detalle || categoria} (Cuota ${i + 1}/${c.cant})`
+            const montoStr = prompt(`¿Cuánto pagaste de ${categoria}${detalle ? ' (' + detalle + ')' : ''}?`, montoEstimado); if (montoStr === null) return; const montoFinal = parseFloat(montoStr) \vert{}\vert{} montoEstimado;  const ymSel = document.getElementById('filtro-mes-anio').value \vert{}\vert{} ymActualLocal(); const hoyDia = pad2(new Date().getDate());  await enviarASupabase([{ fecha: `${ymSel}-${hoyDia}`, tipo_movimiento: 'Gasto', categoria: categoria, detalle: detalle, monto_pesos: montoFinal, pagado: true, alerta_estafa: false, cargado_por: MODO_ACTUAL }]); }  async function guardarMovimiento(e) { e.preventDefault(); const tipo = document.getElementById('mov-tipo').value; const categoria = document.getElementById('mov-categoria').value; const detalle = document.getElementById('mov-detalle').value.trim(); const fechaBase = document.getElementById('mov-fecha').value \vert{}\vert{} fechaHoyLocal(); const diaVenc = parseInt(document.getElementById('mov-dia-venc').value) \vert{}\vert{} 10;  const c = tipo === 'Gasto' ? calcularCuotas() : { cant: 1, valorCuota: parseFloat(document.getElementById('mov-monto').value) \vert{}\vert{} 0, totalFinal: parseFloat(document.getElementById('mov-monto').value) \vert{}\vert{} 0 }; const esRiesgoso = tipo === 'Gasto' && (c.totalFinal >= UMBRAL_ALERTA \vert{}\vert{} categoria.includes('⚠️'));  const filasAInsertar = []; for (let i = 0; i < c.cant; i++) { const fechaCuota = sumarMesesAFecha(fechaBase, i); const textoDetalle = c.cant > 1 ? `${detalle || categoria} (Cuota ${i + 1}/${c.cant})`
                     : detalle;
 
                 filasAInsertar.push({
@@ -783,11 +713,7 @@
 
         async function enviarASupabase(filas) {
             try {
-                const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SB_KEY,
-                        'Authorization': `Bearer ${SB_KEY}`,
+                const res = await fetch(`${SB_URL}/rest/v1/movimientos_padres`, { method: 'POST', headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
                         'Content-Type': 'application/json',
                         'Prefer': 'return=minimal'
                     },
@@ -800,24 +726,15 @@
             }
         }
 
-        async function borrarMovimiento(id) {
-            if (!confirm("¿Seguro que querés borrar este registro?")) return;
+        async function borrarMovimiento(id, categoria = "", monto = 0) {
+            const detalleConfirm = categoria
+                ? `¿Querés borrar "${categoria}" por $${parseFloat(monto).toLocaleString('es-AR')}?`
+                : "¿Seguro que querés borrar este registro?";
+            if (!confirm(detalleConfirm)) return;
             try {
                 await fetch(`${SB_URL}/rest/v1/movimientos_padres?id=eq.${id}`, {
                     method: 'DELETE',
-                    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
-                });
-                cargarDatos();
-            } catch (err) {
-                alert("Error al borrar.");
-            }
-        }
-
-        // --- FUNCIONES DE WHATSAPP CON SOPORTE MULTI-CONTACTO ---
-        function elegirDestinatarioWA(mensajeCodificado) {
-            const lista = parsearTelefonosWA();
-            if (lista.length === 0) {
-                window.open(`https://wa.me/?text=${mensajeCodificado}`, '_blank');
+                    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }); cargarDatos(); } catch (err) { alert("Error al borrar."); } }  // --- FUNCIONES DE WHATSAPP CON SOPORTE MULTI-CONTACTO --- function elegirDestinatarioWA(mensajeCodificado) { const lista = parsearTelefonosWA(); if (lista.length === 0) { window.open(`https://wa.me/?text=${mensajeCodificado}`, '_blank');
                 return;
             }
             if (lista.length === 1) {
@@ -825,7 +742,7 @@
                 return;
             }
             let menu = "¿A quién le enviamos el mensaje?\n\n";
-            lista.forEach((item, idx) => { menu += `${idx + 1} - ${item.nombre}\n`; });
+            lista.forEach((item, idx) => { menu += `${idx + 1} -${item.nombre}\n`; });
             menu += "\nEscribí el número:";
             const resp = prompt(menu, "1");
             if (resp === null) return;
@@ -839,31 +756,4 @@
         }
 
         function enviarAlertaPuntualWhatsApp(categoria, detalle, monto) {
-            const msg = encodeURIComponent(`⚠️ Aviso de Cuentas Claras: Anoté un gasto de $${monto.toLocaleString('es-AR')} en "${categoria}" (${detalle || 'sin detalle'}). ¿Lo revisamos juntos?`);
-            elegirDestinatarioWA(msg);
-        }
-
-        function compartirResumenWhatsApp() {
-            const ing = document.getElementById('total-ingresos').textContent;
-            const gas = document.getElementById('total-gastos').textContent;
-            const sal = document.getElementById('total-saldo').textContent;
-            const ymSel = document.getElementById('filtro-mes-anio').value || ymActualLocal();
-            const [a, m] = ymSel.split('-');
-            const nombreMes = `${MESES_LARGOS[parseInt(m) - 1]} ${a}`;
-
-            let texto = `🏡 *Resumen Cuentas Claras - ${nombreMes}*\n\n`;
-            texto += `💰 Ingresos: ${ing}\n`;
-            texto += `🛒 Gastos: ${gas}\n`;
-            texto += `🏦 Saldo: ${sal}\n\n`;
-            texto += `*Movimientos del mes:*\n`;
-
-            movimientosMes.filter(m => m.tipo_movimiento !== 'Servicio_Fijo').slice(0, 10).forEach(m => {
-                const signo = m.tipo_movimiento === 'Ingreso' ? '+' : '-';
-                texto += `• ${m.fecha.slice(5)}: ${m.categoria}${m.detalle ? ' (' + m.detalle + ')' : ''} (${signo}$${parseFloat(m.monto_pesos).toLocaleString('es-AR')})\n`;
-            });
-
-            elegirDestinatarioWA(encodeURIComponent(texto));
-        }
-    </script>
-</body>
-</html>
+            const msg = encodeURIComponent(`⚠️ Aviso de
